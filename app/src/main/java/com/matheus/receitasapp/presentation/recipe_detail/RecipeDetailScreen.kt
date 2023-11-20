@@ -45,6 +45,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
+import com.matheus.receitasapp.common.ShimmerRecipeDetail
 import com.matheus.receitasapp.data.remote.dto.Ingredient
 import com.matheus.receitasapp.presentation.recipe_detail.components.IngredientsDetail
 import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
@@ -86,14 +87,13 @@ fun RecipeDetailScreen(
         )
     }
     if(uiState.isLoading) {
-        Text(
-            text = "Carregando!!!",
-            color = MaterialTheme.colorScheme.error,
-            textAlign = TextAlign.Center,
+        Column(
+            verticalArrangement = Arrangement.Bottom,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-        )
+                .padding(start = DpDimensions.Dp25, top = 380.dp, end = DpDimensions.Dp25)
+        ) {
+            ShimmerRecipeDetail()
+        }
     }
     else{
         BoxWithConstraints(
@@ -316,7 +316,6 @@ fun IngredientItemTest2(ingredientsDetail: IngredientsDetail) {
         }
     }
 }
-
 
 @Composable
 fun IngredientItem(ingredient: Ingredient) {
