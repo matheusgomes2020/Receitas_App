@@ -87,13 +87,8 @@ fun RecipeDetailScreen(
         )
     }
     if(uiState.isLoading) {
-        Column(
-            verticalArrangement = Arrangement.Bottom,
-            modifier = Modifier
-                .padding(start = DpDimensions.Dp25, top = 380.dp, end = DpDimensions.Dp25)
-        ) {
+
             ShimmerRecipeDetail()
-        }
     }
     else{
         BoxWithConstraints(

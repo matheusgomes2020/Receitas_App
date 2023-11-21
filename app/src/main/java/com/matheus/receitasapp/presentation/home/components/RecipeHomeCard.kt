@@ -49,8 +49,8 @@ fun RecipeHomeCard(
             shape = RoundedCornerShape(DpDimensions.Small),
             color = RoyalBlue65,
             modifier = Modifier
-                .width(230.dp)
-                .height(350.dp)
+                .width(200.dp)
+                .height(300.dp)
                 .clickable {
                     navController.navigate("${NavDestinations.RecipeDetails.RECIPE_DETAILS}/${s1}")
                 }
@@ -61,8 +61,10 @@ fun RecipeHomeCard(
                     contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .width(200.dp)
-                    .height(300.dp),
+                    .width(170.dp)
+//                    .width(200.dp)
+//                    .height(300.dp),
+                    .height(250.dp),
             )
 
         }
@@ -72,7 +74,7 @@ fun RecipeHomeCard(
         ) {
             Text(
                 modifier = Modifier
-                    .width(200.dp),
+                    .width(170.dp),
                 text = recipe.label,
                 fontFamily = fontFamily3,
                 fontWeight = FontWeight.SemiBold,
