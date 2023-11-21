@@ -57,6 +57,7 @@ import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.AppBarWithBack
 import com.matheus.receitasapp.common.CustomPadding
 import com.matheus.receitasapp.common.DpDimensions
+import com.matheus.receitasapp.common.RecipeSearchItemShimmer
 import com.matheus.receitasapp.data.remote.dto.Recipe
 import com.matheus.receitasapp.navigation.NavDestinations
 import com.matheus.receitasapp.ui.theme.DarkGrey11
@@ -160,9 +161,6 @@ fun SearchRecipesScreen(
                 }
                 Spacer(modifier = Modifier.height(DpDimensions.Normal))
                 state.recipes?.let {
-                    //Text(text = state.recipes.toString())
-                    Log.d("RECEITA", "searchRecipes: resultado${state.recipes}")
-
                     LazyColumn(modifier = Modifier
                         .background(Color.White),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -183,14 +181,14 @@ fun SearchRecipesScreen(
                     )
                 }
                 if (state.isLoading) {
-                    Text(
-                        text = "Carregando!!!",
-                        color = MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
-                    )
+                    LazyColumn(modifier = Modifier
+                        .background(Color.White),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        items(10) {
+                            RecipeSearchItemShimmer()
+                        }
+                    }
                 }
             }
         }

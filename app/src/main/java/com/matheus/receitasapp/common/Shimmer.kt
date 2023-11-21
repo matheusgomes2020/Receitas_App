@@ -1,12 +1,14 @@
 package com.matheus.receitasapp.common
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,7 +51,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.matheus.receitasapp.R
+import com.matheus.receitasapp.data.remote.dto.Recipe
+import com.matheus.receitasapp.navigation.NavDestinations
 import com.matheus.receitasapp.presentation.recipe_detail.DetailsContentTest
 import com.matheus.receitasapp.presentation.recipe_detail.IngredientItemTest2
 import com.matheus.receitasapp.presentation.recipe_detail.IngredientsContainerTest
@@ -59,6 +65,9 @@ import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
 import com.matheus.receitasapp.ui.theme.AppColor
 import com.matheus.receitasapp.ui.theme.BlueGrey11
 import com.matheus.receitasapp.ui.theme.Grey46
+import com.matheus.receitasapp.ui.theme.fontFamily2
+import com.matheus.receitasapp.ui.theme.fontFamily3
+import kotlin.math.roundToInt
 
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -103,6 +112,94 @@ fun IngredientsContainerShimmer() {
             items(5) {
                 IngredientItemShimmer()
             }
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
+@Composable
+fun RecipeSearchItemShimmer() {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White),
+        shape = RoundedCornerShape(DpDimensions.Smallest),
+        // shadowElevation = 3.dp,
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(DpDimensions.Smallest)
+                .background(Color.White),
+            //  contentAlignment = Alignment.Center
+        ) {
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White),
+                horizontalArrangement = Arrangement.spacedBy(DpDimensions.Smallest),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(DpDimensions.Small))
+                        .shimmerEffect(),
+                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(DpDimensions.Smallest),
+                    modifier = Modifier
+                        .padding(DpDimensions.Smallest) ) {
+                    Box(
+                        modifier = Modifier
+                            .width(245.dp)
+                            .height(20.dp)
+                            .shimmerEffect())
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(DpDimensions.Small)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(DpDimensions.Smallest)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(13.dp)
+                                    .shimmerEffect()
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .width(30.dp)
+                                    .height(13.dp)
+                                    .shimmerEffect()
+                            )
+                        }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(DpDimensions.Smallest)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(13.dp)
+                                    .shimmerEffect()
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .width(30.dp)
+                                    .height(13.dp)
+                                    .shimmerEffect()
+                            )
+                        }
+                    }
+                }
+//                Box(
+//                    modifier = Modifier
+//                        .size(13.dp)
+//                        .shimmerEffect()
+//                )
+            }
+
         }
     }
 }
