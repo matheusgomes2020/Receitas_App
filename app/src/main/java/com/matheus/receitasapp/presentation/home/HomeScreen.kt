@@ -64,7 +64,7 @@ fun HomeScreen(navController: NavController,
 
 
     val state =  viewModel.state.value
-    val state2 =  viewModel.state2.value
+    val state2 =  viewModel.stateCuisineTyp.value
     Log.d("VENTO", "HomeScreen: ${state.recipes}")
 
 

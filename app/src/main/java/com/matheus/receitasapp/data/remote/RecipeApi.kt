@@ -44,7 +44,7 @@ interface RecipeApi {
         ): WHAT
 
     @GET("/api/recipes/v2/")
-    suspend fun getRecipes2(
+    suspend fun getRecipesByCuisineType(
         @Query("type") type: String = TYPE,
         @Query("q") query: String = " ",
         @Query("app_id") apId: String = APP_ID,

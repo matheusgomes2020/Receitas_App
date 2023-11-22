@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.matheus.receitasapp.common.Constants
 import com.matheus.receitasapp.common.Constants.QUERY
 import com.matheus.receitasapp.common.Resource
+import com.matheus.receitasapp.domain.use_case.get_recipes.GetRecipesByCuisineTypeUseCase
 import com.matheus.receitasapp.domain.use_case.get_recipes.GetRecipesUseCase
 import com.matheus.receitasapp.domain.use_case.search_recipes.SearchRecipesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,11 +20,21 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchRecipesViewModel @Inject constructor(
     private val searchRecipesUseCase: SearchRecipesUseCase,
+    private val getRecipesUseCase: GetRecipesUseCase,
+    private val getRecipesByCuisineTypeUseCase: GetRecipesByCuisineTypeUseCase,
 
-): ViewModel() {
+
+    ): ViewModel() {
 
     private val _state = mutableStateOf(HitListState())
     val state: State<HitListState> = _state
+
+    private val _stateCuisineType = mutableStateOf(HitListState())
+    val stateCuisineTyp: State<HitListState> = _stateCuisineType
+
+    init {
+        getRecipesByTypeOfMeal("Dinner")
+    }
 
     fun searchRecipes( query: String ) {
         Log.d("RECEITA", "searchRecipes: chama view model")
@@ -52,5 +63,24 @@ class SearchRecipesViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+     fun getRecipesByTypeOfMeal(mealType: String ) {
+        getRecipesUseCase(mealType).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _state.value = HitListState(recipes = result.data ?: emptyList())
+                }
 
+                is Resource.Error -> {
+                    _state.value = HitListState(
+                        error = result.message ?: "An unexpected error occured"
+                    )
+                }
+
+                is Resource.Loading -> {
+                    _state.value = HitListState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+
+    }
 }

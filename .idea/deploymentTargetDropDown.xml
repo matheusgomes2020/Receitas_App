@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
+    <runningDeviceTargetSelectedWithDropDown>
+      <Target>
+        <type value="RUNNING_DEVICE_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\batat\.android\avd\Pixel_7_Pro_API_33.avd" />
+          </Key>
+        </deviceKey>
+      </Target>
+    </runningDeviceTargetSelectedWithDropDown>
     <targetSelectedWithDropDown>
       <Target>
         <type value="QUICK_BOOT_TARGET" />
@@ -12,15 +23,14 @@
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-11-14T17:14:55.072494600Z" />
-    <multipleDevicesSelectedInDropDown value="true" />
+    <timeTargetWasSelectedWithDropDown value="2023-11-22T17:51:33.777844100Z" />
     <runningDeviceTargetsSelectedWithDialog>
       <Target>
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\batat\.android\avd\Pixel_7_Pro_API_33.avd" />
+            <value value="C:\Users\batat\.android\avd\Pixel_2_API_29.avd" />
           </Key>
         </deviceKey>
       </Target>
@@ -29,7 +39,7 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\batat\.android\avd\Pixel_API_31.avd" />
+            <value value="C:\Users\batat\.android\avd\Pixel_7_API_31.avd" />
           </Key>
         </deviceKey>
       </Target>
@@ -37,8 +47,8 @@
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
-            <type value="SERIAL_NUMBER" />
-            <value value="96665905" />
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\batat\.android\avd\Pixel_7_Pro_API_33.avd" />
           </Key>
         </deviceKey>
       </Target>
@@ -49,7 +59,7 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\batat\.android\avd\Pixel_7_Pro_API_33.avd" />
+            <value value="C:\Users\batat\.android\avd\Pixel_2_API_29.avd" />
           </Key>
         </deviceKey>
       </Target>
@@ -58,7 +68,16 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\batat\.android\avd\Pixel_API_31.avd" />
+            <value value="C:\Users\batat\.android\avd\Pixel_7_API_31.avd" />
+          </Key>
+        </deviceKey>
+      </Target>
+      <Target>
+        <type value="QUICK_BOOT_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\batat\.android\avd\Pixel_7_Pro_API_33.avd" />
           </Key>
         </deviceKey>
       </Target>
