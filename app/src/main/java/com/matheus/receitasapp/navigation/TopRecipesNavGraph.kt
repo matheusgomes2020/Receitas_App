@@ -22,7 +22,6 @@ fun NavGraphBuilder.topRecipesNavGraph(navController: NavController) {
                 }
             )
         ) { navBackStackEntry ->
-
             navBackStackEntry.arguments?.getString("recipeType").let {
                 TopRecipesScreen(recipeType = it!!, navController = navController, isSystemInDarkTheme = isSystemInDarkTheme() )
             }

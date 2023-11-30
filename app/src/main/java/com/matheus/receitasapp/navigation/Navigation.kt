@@ -22,7 +22,7 @@ fun RootNavigationGraph( navController: NavHostController ) {
         startDestination = HomeGraph.ROOT
     ) {
         composable(HomeGraph.ROOT) {
-            SearchRecipesScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme() )
+         //   SearchRecipesScreen( params =, navController = navController, isSystemInDarkTheme = isSystemInDarkTheme() )
         }
         recipeDetailsNavGraph( navController = navController )
     }

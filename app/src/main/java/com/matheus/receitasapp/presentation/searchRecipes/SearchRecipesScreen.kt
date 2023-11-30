@@ -16,16 +16,19 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,10 +43,12 @@ import com.matheus.receitasapp.common.AppBarWithBack
 import com.matheus.receitasapp.common.CustomPadding
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.common.RecipeSearchItemShimmer
+import com.matheus.receitasapp.presentation.filters.FilterViewModel
+import com.matheus.receitasapp.presentation.searchRecipes.components.FilterSideSheet
 import com.matheus.receitasapp.presentation.searchRecipes.components.RecipeSearchItem
 import com.matheus.receitasapp.presentation.searchRecipes.components.RowSearchType
 import com.matheus.receitasapp.presentation.searchRecipes.components.SearchBar
-import com.matheus.receitasapp.presentation.searchRecipes.components.types
+import com.matheus.receitasapp.presentation.searchRecipes.components.mealTypes
 import com.matheus.receitasapp.ui.theme.DarkGrey11
 import com.matheus.receitasapp.ui.theme.GreenApp
 import com.matheus.receitasapp.ui.theme.ReceitasAppTheme
@@ -52,10 +57,12 @@ import com.matheus.receitasapp.ui.theme.ReceitasAppTheme
 @Composable
 fun RowType(
     type: RowSearchType,
-    onSearch: (String) -> Unit
+    selectedd: Boolean,
+    //onType: (String) -> Unit,
+    onSelected: (Boolean) -> Unit
 ){
     var selected = remember {
-        mutableStateOf(false)
+        mutableStateOf(selectedd)
     }
     val color = remember {
     mutableStateOf(
@@ -64,15 +71,16 @@ fun RowType(
 }
     Surface(
         onClick = {
-//            if (selected.value) {
-//                selected.value = false
-//                color.value = Color.White
-//            } else {
-//                selected.value = true
-//                color.value = GreenApp
-//            }
-            onSearch(type.label)
-            Log.d("ISSO", "getRecipeByCuisineType: ${type.label}")
+            if (selected.value) {
+                selected.value = false
+                color.value = Color.White
+            } else {
+                selected.value = true
+                color.value = GreenApp
+            }
+            //onType(type.label)
+            onSelected(selected.value)
+            Log.d("VAMOSPRODUZIR", "getRecipeByCuisineType: ${type.label} ! $selected")
 
         },
         color = color.value,
@@ -91,14 +99,69 @@ fun RowType(
 }
 
 @Composable
+fun RowTypeT(
+    title: String,
+    selectedd: Boolean,
+    //onType: (String) -> Unit,
+    onSelected: (Boolean) -> Unit
+){
+    var selected = remember {
+        mutableStateOf(selectedd)
+    }
+    val color = remember {
+        mutableStateOf(
+            Color.White
+        )
+    }
+    Surface(
+        onClick = {
+            if (selected.value) {
+                selected.value = false
+                color.value = Color.White
+            } else {
+                selected.value = true
+                color.value = GreenApp
+            }
+            //onType(type.label)
+            onSelected(selected.value)
+            Log.d("VAMOSPRODUZIR", "getRecipeByCuisineType: ${title} ! $selected")
+
+        },
+        color = color.value,
+        modifier = Modifier
+            .padding(end = DpDimensions.Small),
+        shape = RoundedCornerShape(DpDimensions.Smallest),
+        shadowElevation = 3.dp,
+    ) {
+        Box(
+            modifier = Modifier
+                .padding( horizontal = DpDimensions.Small, vertical = DpDimensions.Smallest )
+        ) {
+            Text(text = title)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun SearchRecipesScreen(
     navController: NavController,
     isSystemInDarkTheme: Boolean,
-    searchRecipesViewModel: SearchRecipesViewModel =  hiltViewModel()
+    searchRecipesViewModel: SearchRecipesViewModel =  hiltViewModel(),
 ) {
+
+    val mealTypeIsActive = searchRecipesViewModel.uiState2.value.mealType
+    val cuisineTypeIsActive = searchRecipesViewModel.uiState2.value.cuisineType
+    val dietIsActive = searchRecipesViewModel.uiState2.value.diet
+
+    val mealTypesSearch = listOf(RowSearchType(mealTypeIsActive), RowSearchType(cuisineTypeIsActive), RowSearchType(dietIsActive),)
 
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = !isSystemInDarkTheme
+
+    var isFilterSheetOpen by rememberSaveable { mutableStateOf(false) }
+    var queryRemember by rememberSaveable { mutableStateOf("") }
+    val bottomSheetState = rememberModalBottomSheetState()
 
     SideEffect {
         systemUiController.setSystemBarsColor(
@@ -107,12 +170,8 @@ fun SearchRecipesScreen(
             darkIcons = useDarkIcons
         )
     }
-    var stateSearch by remember {
-        mutableStateOf(SearchState())
-    }
+    var stateSearch by remember { mutableStateOf(SearchState()) }
     val state = searchRecipesViewModel.state.value
-    val state2 = searchRecipesViewModel.stateCuisineTyp.value
-    Log.d("ISSO", "First State Value: ${state}")
     Scaffold(
         topBar = {
             AppBarWithBack(
@@ -137,16 +196,20 @@ fun SearchRecipesScreen(
                 verticalPadding = DpDimensions.Normal,
                 horizontalPadding = DpDimensions.Normal
             ) {
-                SearchBar(placeholder = "search", searchState = stateSearch ) {
+                SearchBar(placeholder = "search", searchState = stateSearch, onSearch =  {
+                    queryRemember = it
                     stateSearch = stateSearch.copy(query = it)
-                    searchRecipesViewModel.searchRecipes(it)
-                }
+                    searchRecipesViewModel.searchRecipes(it, cuisineType = cuisineTypeIsActive, diet = dietIsActive, mealType = mealTypeIsActive ) },
+                    onSettingsClick = {
+                        isFilterSheetOpen = true
+                    })
                 LazyRow(contentPadding = PaddingValues(vertical = DpDimensions.Normal),
                 ){
-                    items( types ) { type ->
-                        RowType( type, onSearch = {searchRecipesViewModel.getRecipesByTypeOfMeal(it)
-                            Log.d("ISSO", "LazyRow: $it")
-                        })
+                    items( mealTypesSearch ) { type ->
+                        if (type.label != "") {
+                            RowType( type, false,
+                                onSelected = {})
+                        }
                     }
                 }
                 state.recipes?.let {
@@ -170,6 +233,7 @@ fun SearchRecipesScreen(
                     )
                 }
                 if (state.isLoading) {
+
                     LazyColumn(modifier = Modifier
                         .background(Color.White),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -182,7 +246,14 @@ fun SearchRecipesScreen(
             }
         }
     }
-
+    if (isFilterSheetOpen) {
+        FilterSideSheet(
+            query = queryRemember,
+            isSystemInDarkTheme = isSystemInDarkTheme,
+            bottomSheetState = bottomSheetState,
+            onDismiss = { isFilterSheetOpen = false }
+        )
+    }
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -219,8 +290,10 @@ fun SC(){
                 }
                 LazyRow(contentPadding = PaddingValues(vertical = DpDimensions.Normal),
                     ){
-                    items( types ) { type ->
-                        RowType(  type, {} )
+                    items( mealTypes ) { type ->
+                        RowType(  type, false, {},
+                          //  {}
+                        )
                     }
                 }
             }
@@ -237,9 +310,6 @@ fun SuggestionChipExample() {
         label = { Text("Suggestion chip") }
     )
 }
-
-
-
 
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)

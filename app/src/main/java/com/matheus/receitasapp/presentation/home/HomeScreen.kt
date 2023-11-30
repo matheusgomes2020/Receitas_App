@@ -1,6 +1,5 @@
 package com.matheus.receitasapp.presentation.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -46,8 +45,6 @@ fun HomeScreen(navController: NavController,
     val useDarkIcons = !isSystemInDarkTheme
 
     SideEffect {
-        //viewModel.getRecipes("breakFast")
-        //viewModel.searchRecipes("tomato")
         systemUiController.setSystemBarsColor(
             color = if (useDarkIcons)
                 Color.White else DarkGrey11,
@@ -55,26 +52,14 @@ fun HomeScreen(navController: NavController,
         )
     }
 
-    //viewModel.searchRecipes("tomato").let {
-       // Log.d("VENTO", "HomeScreen: $it")
-
-   // }
-
-
-
-
-    val state =  viewModel.state.value
-    val state2 =  viewModel.stateCuisineTyp.value
-    Log.d("VENTO", "HomeScreen: ${state.recipes}")
-
-
+    val stateBreakFast =  viewModel.state.value
+    val stateSouthAmericanFood =  viewModel.stateCuisineTyp.value
 
     Scaffold(
         topBar = {
             MainAppBar(icon1 = R.drawable.search, title = "" , imageUrl = "",
                 onSearchClick = {
-                  //  viewModel.searchRecipes(" ")
-                    navController.navigate( SEARCH_RECIPES )
+                    navController.navigate( SEARCH_RECIPES)
                 })
         }
     ) { paddingValues ->
@@ -100,14 +85,12 @@ fun HomeScreen(navController: NavController,
                 ) {
                     SubtitleHeader(title = "Breakfast", isIconVisible = false, isSystemInDarkTheme = useDarkIcons )
                 }
-
-            state.recipes?.let {
-                RecipeHomeCardCell( navController, state )
+            stateBreakFast.recipes?.let {
+                RecipeHomeCardCell( navController, stateBreakFast )
             }
-
-            if (state.error.isNotBlank()) {
+            if (stateBreakFast.error.isNotBlank()) {
                 Text(
-                    text = state.error,
+                    text = stateBreakFast.error,
                     color = MaterialTheme.colorScheme.error,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -115,7 +98,7 @@ fun HomeScreen(navController: NavController,
                         .padding(horizontal = 20.dp)
                 )
             }
-            if (state.isLoading) {
+            if (stateBreakFast.isLoading) {
                 Text(
                     text = "Carregando!!!",
                     color = MaterialTheme.colorScheme.error,
@@ -125,21 +108,19 @@ fun HomeScreen(navController: NavController,
                         .padding(horizontal = 20.dp)
                 )
             }
-
             CustomPadding(
                 verticalPadding = 0.dp,
                 horizontalPadding = DpDimensions.Dp20
             ) {
                 SubtitleHeader(title = "South American Food", isIconVisible = false, isSystemInDarkTheme = useDarkIcons )
             }
-
-            state2.recipes?.let {
-                RecipeHomeCardCell( navController, state2 )
+            stateSouthAmericanFood.recipes?.let {
+                RecipeHomeCardCell( navController, stateSouthAmericanFood )
             }
 
-            if (state2.error.isNotBlank()) {
+            if (stateSouthAmericanFood.error.isNotBlank()) {
                 Text(
-                    text = state.error,
+                    text = stateBreakFast.error,
                     color = MaterialTheme.colorScheme.error,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -147,7 +128,7 @@ fun HomeScreen(navController: NavController,
                         .padding(horizontal = 20.dp)
                 )
             }
-            if (state2.isLoading) {
+            if (stateSouthAmericanFood.isLoading) {
                 Text(
                     text = "Carregando!!!",
                     color = MaterialTheme.colorScheme.error,

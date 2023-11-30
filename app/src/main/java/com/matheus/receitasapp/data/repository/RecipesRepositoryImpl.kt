@@ -12,6 +12,53 @@ class RecipesRepositoryImpl @Inject constructor(
     override suspend fun searchRecipes(query: String): List<Hit> {
         return api.searchRecipes( query = query ).hits
     }
+
+    override suspend fun searchRecipesByDiet(query: String, diet: String): List<Hit> {
+        return api.searchRecipesByDiet(query = query, diet = diet).hits
+    }
+
+    override suspend fun searchRecipesByCuisineType(query: String, cuisineType: String): List<Hit> {
+        return api.getRecipesByCuisineType(query = query, cuisineType = cuisineType).hits
+    }
+
+    override suspend fun searchRecipesByMealType(query: String, typeOfMeal: String): List<Hit> {
+        return api.searchRecipesByMealType(query = query, mealType = typeOfMeal).hits
+    }
+
+    override suspend fun searchRecipesByAllSelected(
+        query: String,
+        diet: String,
+        cuisineType: String,
+        typeOfMeal: String
+    ): List<Hit> {
+        return api.searchRecipesByAllSelected(query = query, diet = diet, cuisineType = cuisineType, mealType = typeOfMeal).hits
+
+    }
+
+    override suspend fun searchRecipesByCuisineTypeAndDiet(
+        query: String,
+        diet: String,
+        cuisineType: String
+    ): List<Hit> {
+        return api.searchRecipesByCuisineTypeAndDiet(query = query, diet = diet, cuisineType = cuisineType).hits
+    }
+
+    override suspend fun searchRecipesByMealTypeAndDiet(
+        query: String,
+        diet: String,
+        mealType: String
+    ): List<Hit> {
+        return api.searchRecipesByMealTypeAndDiet(query = query, diet = diet, mealType = mealType).hits
+    }
+
+    override suspend fun searchRecipesByMealTypeAndCuisineType(
+        query: String,
+        cuisineType: String,
+        mealType: String
+    ): List<Hit> {
+        return api.searchRecipesByMealTypeAndCuisineType(query = query, cuisineType = cuisineType, mealType = mealType).hits
+    }
+
     override suspend fun getRecipes(mealType: String): List<Hit> {
         return api.getRecipes( mealType = mealType ).hits
         Log.d("VENTO", "REPOSITORY:$mealType | ${api.getRecipes(mealType = mealType).hits}")

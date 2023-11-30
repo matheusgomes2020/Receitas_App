@@ -1,5 +1,6 @@
 package com.matheus.receitasapp.presentation.searchRecipes.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,7 +29,8 @@ fun SearchBar(
     placeholder: String,
     modifier: Modifier = Modifier,
     searchState: SearchState,
-    onSearch: (String) -> Unit = {}
+    onSearch: (String) -> Unit = {},
+    onSettingsClick: () -> Unit = {}
 ) {
 
    Surface(
@@ -81,7 +83,11 @@ fun SearchBar(
                 painter = painterResource(id = R.drawable.adjustments),
                 contentDescription = "search icon",
                 // tint = MaterialTheme.colorScheme.inverseSurface,
-                modifier = Modifier.size(DpDimensions.Dp20)
+                modifier = Modifier
+                    .size(DpDimensions.Dp20)
+                    .clickable {
+                        onSettingsClick()
+                    }
             )
         }
     }

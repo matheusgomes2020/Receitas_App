@@ -19,8 +19,77 @@ interface RecipeApi {
         @Query("q") query: String,
         @Query("app_id") apId: String = APP_ID,
         @Query("app_key") appKey: String = API_KEY,
+        ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByDiet(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("diet") diet: String,
+        ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByCuisineType(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("cuisineType") cuisineType: String,
 
         ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByMealType(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("mealType") mealType: String,
+    ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByAllSelected(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("diet") diet: String,
+        @Query("cuisineType") cuisineType: String,
+        @Query("mealType") mealType: String,
+    ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByCuisineTypeAndDiet(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("diet") diet: String,
+        @Query("cuisineType") cuisineType: String,
+        ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByMealTypeAndDiet(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("diet") diet: String,
+        @Query("mealType") mealType: String,
+    ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByMealTypeAndCuisineType(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("cuisineType") cuisineType: String,
+        @Query("mealType") mealType: String,
+    ): WHAT
+
 
     //https://api.edamam.com/api/recipes/v2/a7c379c59775dd0c7c88710f7fecff81?type=public&app_id=4b5c7b4a&app_key=15a90ed1dd0459114f6e5aab67781066
     //@GET("/api/recipes/v2/{recipeId}")

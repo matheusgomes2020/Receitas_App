@@ -40,37 +40,39 @@ fun NavGraphBuilder.mainNavGraph(navController: NavController, isSystemInDarkThe
 
         composable(
             route = Screen.Home.route,
-//            enterTransition = {
-//                enterTransitionAnimation
-//            },
-//            exitTransition = { exitTransitionAnimation }
+            enterTransition = {
+                enterTransitionAnimation
+            },
+            exitTransition = { exitTransitionAnimation }
         ) {
             HomeScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme)
         }
 
         composable(route = Screen.Ingredients.route,
-            //enterTransition = { enterTransitionAnimation },
-            //exitTransition = { exitTransitionAnimation }
+            enterTransition = { enterTransitionAnimation },
+            exitTransition = { exitTransitionAnimation }
         ) {
             IngredientsScreen(navController = navController)
         }
 
         composable(route = Screen.Profile.route,
-            //enterTransition = { enterTransitionAnimation },
-            //exitTransition = { exitTransitionAnimation }
+            enterTransition = { enterTransitionAnimation },
+            exitTransition = { exitTransitionAnimation }
         ) {
             ProfileScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme)
         }
 
-        composable(
-            route = NavDestinations.SearchRecipes.SEARCH_RECIPES,
-        ) {
-            SearchRecipesScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme )
-        }
-
-        recipeDetailsNavGraph2(navController)
-
+//        composable(
+//            route = NavDestinations.SearchRecipes.SEARCH_RECIPES,
+//            enterTransition = { enterTransitionAnimation },
+//            exitTransition = { exitTransitionAnimation }
+//        ) {
+//            SearchRecipesScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme )
+//        }
+        searchScreenNavGraph( navController = navController )
+        recipeDetailsNavGraph2( navController = navController )
         topRecipesNavGraph( navController = navController )
+        filtersNavGraph( navController = navController )
 
     }
 

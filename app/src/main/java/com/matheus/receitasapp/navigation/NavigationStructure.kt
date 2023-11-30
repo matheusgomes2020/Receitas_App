@@ -50,6 +50,11 @@ object NavDestinations {
         const val RECIPE_DETAILS = "recipe_details"
     }
 
+    object Filters {
+        const val FILTERS_MAIN = "filters_main"
+        const val FILTERS = "filters"
+    }
+
     object SearchRecipes {
         const val SEARCH_RECIPES_MAIN = "search_recipes_main"
         const val SEARCH_RECIPES = "search_recipes"
