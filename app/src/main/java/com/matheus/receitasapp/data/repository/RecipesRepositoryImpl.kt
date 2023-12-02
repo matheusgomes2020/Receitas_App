@@ -17,8 +17,12 @@ class RecipesRepositoryImpl @Inject constructor(
         return api.searchRecipesByDiet(query = query, diet = diet).hits
     }
 
+    override suspend fun searchRecipesByHealth(query: String, health: String): List<Hit> {
+        return api.searchRecipesByHealth(query = query, health = health).hits
+    }
+
     override suspend fun searchRecipesByCuisineType(query: String, cuisineType: String): List<Hit> {
-        return api.getRecipesByCuisineType(query = query, cuisineType = cuisineType).hits
+        return api.searchRecipesByCuisineType(query = query, cuisineType = cuisineType).hits
     }
 
     override suspend fun searchRecipesByMealType(query: String, typeOfMeal: String): List<Hit> {
@@ -29,9 +33,10 @@ class RecipesRepositoryImpl @Inject constructor(
         query: String,
         diet: String,
         cuisineType: String,
-        typeOfMeal: String
+        typeOfMeal: String,
+        health: String
     ): List<Hit> {
-        return api.searchRecipesByAllSelected(query = query, diet = diet, cuisineType = cuisineType, mealType = typeOfMeal).hits
+        return api.searchRecipesByAllSelected(query = query, diet = diet, cuisineType = cuisineType, mealType = typeOfMeal, health = health ).hits
 
     }
 
@@ -61,17 +66,14 @@ class RecipesRepositoryImpl @Inject constructor(
 
     override suspend fun getRecipes(mealType: String): List<Hit> {
         return api.getRecipes( mealType = mealType ).hits
-        Log.d("VENTO", "REPOSITORY:$mealType | ${api.getRecipes(mealType = mealType).hits}")
     }
 
     override suspend fun getRecipesByCuisineType(cuisineType: String ): List<Hit> {
         return api.getRecipesByCuisineType( cuisineType = cuisineType ).hits
-        Log.d("ISSO", "REPOSITORY:$cuisineType | ${api.getRecipesByCuisineType(cuisineType = cuisineType).hits}")
     }
 
     override suspend fun getRecipeInfo(query: String): Hit {
         return api.getRecipeInfo( query = query )
-        Log.d("VAILOGO", "getRecipeInfo:$query ")
     }
 }
 

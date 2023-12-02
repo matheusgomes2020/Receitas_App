@@ -62,13 +62,6 @@ fun NavGraphBuilder.mainNavGraph(navController: NavController, isSystemInDarkThe
             ProfileScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme)
         }
 
-//        composable(
-//            route = NavDestinations.SearchRecipes.SEARCH_RECIPES,
-//            enterTransition = { enterTransitionAnimation },
-//            exitTransition = { exitTransitionAnimation }
-//        ) {
-//            SearchRecipesScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme )
-//        }
         searchScreenNavGraph( navController = navController )
         recipeDetailsNavGraph2( navController = navController )
         topRecipesNavGraph( navController = navController )

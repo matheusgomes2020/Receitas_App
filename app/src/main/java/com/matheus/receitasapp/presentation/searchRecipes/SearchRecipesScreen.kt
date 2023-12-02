@@ -43,8 +43,7 @@ import com.matheus.receitasapp.common.AppBarWithBack
 import com.matheus.receitasapp.common.CustomPadding
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.common.RecipeSearchItemShimmer
-import com.matheus.receitasapp.presentation.filters.FilterViewModel
-import com.matheus.receitasapp.presentation.searchRecipes.components.FilterSideSheet
+import com.matheus.receitasapp.presentation.filters.components.FilterSideSheet
 import com.matheus.receitasapp.presentation.searchRecipes.components.RecipeSearchItem
 import com.matheus.receitasapp.presentation.searchRecipes.components.RowSearchType
 import com.matheus.receitasapp.presentation.searchRecipes.components.SearchBar
@@ -150,11 +149,12 @@ fun SearchRecipesScreen(
     searchRecipesViewModel: SearchRecipesViewModel =  hiltViewModel(),
 ) {
 
-    val mealTypeIsActive = searchRecipesViewModel.uiState2.value.mealType
-    val cuisineTypeIsActive = searchRecipesViewModel.uiState2.value.cuisineType
-    val dietIsActive = searchRecipesViewModel.uiState2.value.diet
+    val mealTypeIsActive = searchRecipesViewModel.uiFiltersState.value.mealType
+    val cuisineTypeIsActive = searchRecipesViewModel.uiFiltersState.value.cuisineType
+    val dietIsActive = searchRecipesViewModel.uiFiltersState.value.diet
+    val healthIsActive = searchRecipesViewModel.uiFiltersState.value.health
 
-    val mealTypesSearch = listOf(RowSearchType(mealTypeIsActive), RowSearchType(cuisineTypeIsActive), RowSearchType(dietIsActive),)
+    val mealTypesSearch = listOf(RowSearchType(mealTypeIsActive), RowSearchType(cuisineTypeIsActive), RowSearchType(dietIsActive), RowSearchType(healthIsActive))
 
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = !isSystemInDarkTheme
@@ -199,7 +199,7 @@ fun SearchRecipesScreen(
                 SearchBar(placeholder = "search", searchState = stateSearch, onSearch =  {
                     queryRemember = it
                     stateSearch = stateSearch.copy(query = it)
-                    searchRecipesViewModel.searchRecipes(it, cuisineType = cuisineTypeIsActive, diet = dietIsActive, mealType = mealTypeIsActive ) },
+                    searchRecipesViewModel.searchRecipes(it, cuisineType = cuisineTypeIsActive, diet = dietIsActive, mealType = mealTypeIsActive, health = healthIsActive  ) },
                     onSettingsClick = {
                         isFilterSheetOpen = true
                     })

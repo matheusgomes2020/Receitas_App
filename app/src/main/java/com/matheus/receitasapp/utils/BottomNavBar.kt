@@ -51,11 +51,7 @@ fun BottomNavBar(
         Column(
             modifier = Modifier
                 .padding(DpDimensions.Small)
-//                .clip(RoundedCornerShape(DpDimensions.Small))
         ) {
-
-
-            //Divider(color = MaterialTheme.colorScheme.outline)
             NavigationBar(
                 containerColor = if (isSystemInDarkTheme()) DarkGrey11 else White,
 
@@ -66,17 +62,8 @@ fun BottomNavBar(
                         shape = RoundedCornerShape(DpDimensions.Dp30)
                         shadowElevation = 3f
                     }
-                    //.clip(RoundedCornerShape(DpDimensions.Dp30))
                     .height(70.dp),
                 tonalElevation = 3.dp
-
-
-//                modifier = Modifier
-//                    //.padding(start = DpDimensions.Small, end = DpDimensions.Small)
-//                   .clip(RoundedCornerShape(DpDimensions.Dp30))
-//                    .height(70.dp)
-
-
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
@@ -115,7 +102,6 @@ fun BottomNavBar(
                     )
                 }
             }
-
         }
     }
 }

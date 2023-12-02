@@ -50,15 +50,55 @@ interface RecipeApi {
     ): WHAT
 
     @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByHealth(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("health") health: String,
+    ): WHAT
+
+    @GET("/api/recipes/v2/")
     suspend fun searchRecipesByAllSelected(
         @Query("type") type: String = TYPE,
         @Query("q") query: String,
         @Query("app_id") apId: String = APP_ID,
         @Query("app_key") appKey: String = API_KEY,
         @Query("diet") diet: String,
+        @Query("health") health: String,
         @Query("cuisineType") cuisineType: String,
         @Query("mealType") mealType: String,
     ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByHealthTypeAndDiet(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("diet") diet: String,
+        @Query("health") health: String,
+        ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByHealthTypeAndCuisineType(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("health") health: String,
+        @Query("cuisineType") cuisineType: String,
+    ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByHealthTypeAndMealType(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("health") health: String,
+        @Query("mealType") mealType: String,
+        ): WHAT
 
     @GET("/api/recipes/v2/")
     suspend fun searchRecipesByCuisineTypeAndDiet(
@@ -86,6 +126,17 @@ interface RecipeApi {
         @Query("q") query: String,
         @Query("app_id") apId: String = APP_ID,
         @Query("app_key") appKey: String = API_KEY,
+        @Query("cuisineType") cuisineType: String,
+        @Query("mealType") mealType: String,
+    ): WHAT
+
+    @GET("/api/recipes/v2/")
+    suspend fun searchRecipesByMealTypeAndCuisineTypeAndHealth(
+        @Query("type") type: String = TYPE,
+        @Query("q") query: String,
+        @Query("app_id") apId: String = APP_ID,
+        @Query("app_key") appKey: String = API_KEY,
+        @Query("health") health: String,
         @Query("cuisineType") cuisineType: String,
         @Query("mealType") mealType: String,
     ): WHAT

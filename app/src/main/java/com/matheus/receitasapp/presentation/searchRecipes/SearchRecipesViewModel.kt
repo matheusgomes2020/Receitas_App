@@ -12,6 +12,7 @@ import com.matheus.receitasapp.domain.use_case.get_recipes.GetRecipesUseCase
 import com.matheus.receitasapp.domain.use_case.search_recipes.SearchRecipesByAllUseCase
 import com.matheus.receitasapp.domain.use_case.search_recipes.SearchRecipesUseCase
 import com.matheus.receitasapp.domain.use_case.search_recipes.SearchRecipesUseCaseByDiet
+import com.matheus.receitasapp.domain.use_case.search_recipes.SearchRecipesUseCaseByHealth
 import com.matheus.receitasapp.domain.use_case.search_recipes.SearchRecipesUseCaseByMealType
 import com.matheus.receitasapp.domain.use_case.search_recipes.SearchRecipesUseCaseCuisineType
 import com.matheus.receitasapp.domain.use_case.search_recipes.SearchRecipesUseCaseCuisineTypeAndDiet
@@ -27,9 +28,11 @@ data class FilterData2(
     var diet: String = "",
     var cuisineType: String = "",
     var mealType: String = "",
+    var health: String = "",
     var dietIsActive: Boolean = false,
     var cuisineTypeIsActive: Boolean = false,
-    var mealTypeIsActive: Boolean = false
+    var mealTypeIsActive: Boolean = false,
+    var healthIsActive: Boolean = false
 )
 @HiltViewModel
 class SearchRecipesViewModel @Inject constructor(
@@ -37,6 +40,7 @@ class SearchRecipesViewModel @Inject constructor(
     private val searchRecipesByAll: SearchRecipesByAllUseCase,
     private val searchRecipesUseCaseByMealType: SearchRecipesUseCaseByMealType,
     private val searchRecipesUseCaseByDiet: SearchRecipesUseCaseByDiet,
+    private val searchRecipesUseCaseByHealth: SearchRecipesUseCaseByHealth,
     private val searchRecipesUseCaseByCuisineType: SearchRecipesUseCaseCuisineType,
     private val searchRecipesUseCaseCuisineTypeAndDiet: SearchRecipesUseCaseCuisineTypeAndDiet,
     private val searchRecipesUseCaseCuisineTypeAndTypeOfMeal: SearchRecipesUseCaseCuisineTypeAndTypeOfMeal,
@@ -48,13 +52,15 @@ class SearchRecipesViewModel @Inject constructor(
 
     ): ViewModel() {
 
-    data class UiState2(
+    data class UiFiltersState(
         var diet: String = "",
         var cuisineType: String = "",
         var mealType: String = "",
+        var health: String = "",
         var dietIsActive: Boolean = false,
         var cuisineTypeIsActive: Boolean = false,
-        var mealTypeIsActive: Boolean = false
+        var mealTypeIsActive: Boolean = false,
+        var healthIsActive: Boolean = false
     )
 
     private val _state = mutableStateOf(HitListState())
@@ -63,65 +69,54 @@ class SearchRecipesViewModel @Inject constructor(
     private val _stateCuisineType = mutableStateOf(HitListState())
     val stateCuisineTyp: State<HitListState> = _stateCuisineType
 
-    private val _uiState2 = mutableStateOf(UiState2())
-    val uiState2: State<UiState2> = _uiState2
-
-//    private val _stateCuisineTypeActive = MutableStateFlow(BooleanState())
-//    val stateCuisineTypeActive = _stateCuisineTypeActive.asStateFlow()
-//    private val _stateDietActive = MutableStateFlow(BooleanState())
-//    val stateDietActive= _stateDietActive.asStateFlow()
-//    private val _stateMealTypeActive = MutableStateFlow(BooleanState())
-//    val stateMealTypeActive = _stateMealTypeActive.asStateFlow()
-
-
+    private val _uiFiltersState = mutableStateOf(UiFiltersState())
+    val uiFiltersState: State<UiFiltersState> = _uiFiltersState
 
     init {
         savedStateHandle.get<FilterData2>( KEY_FILTER_DATA )?.let { filterData ->
-            _uiState2.value.diet = filterData.diet
-            _uiState2.value.cuisineType = filterData.cuisineType
-            _uiState2.value.mealType = filterData.mealType
-            _uiState2.value.dietIsActive = filterData.dietIsActive
-            _uiState2.value.cuisineTypeIsActive = filterData.cuisineTypeIsActive
-            _uiState2.value.mealTypeIsActive = filterData.mealTypeIsActive
-
+            _uiFiltersState.value.diet = filterData.diet
+            _uiFiltersState.value.cuisineType = filterData.cuisineType
+            _uiFiltersState.value.mealType = filterData.mealType
+            _uiFiltersState.value.health = filterData.health
+            _uiFiltersState.value.dietIsActive = filterData.dietIsActive
+            _uiFiltersState.value.cuisineTypeIsActive = filterData.cuisineTypeIsActive
+            _uiFiltersState.value.mealTypeIsActive = filterData.mealTypeIsActive
+            _uiFiltersState.value.healthIsActive = filterData.healthIsActive
             }
 
-       // Log.d("VAMOSPRODUZIR?", "MODELLLL: :${stateMealTypeActive.value}|${stateDietActive.value}|${stateCuisineTypeActive.value}")
         getRecipesByTypeOfMeal("Dinner")
     }
 
     fun selectDiet(isActive: Boolean, label: String) {
-        _uiState2.value.diet = label
-        _uiState2.value.dietIsActive = isActive
+        _uiFiltersState.value.diet = label
+        _uiFiltersState.value.dietIsActive = isActive
     }
     fun selectCuisineType(isActive: Boolean, label: String) {
-        _uiState2.value.cuisineType = label
-        _uiState2.value.cuisineTypeIsActive = isActive
+        _uiFiltersState.value.cuisineType = label
+        _uiFiltersState.value.cuisineTypeIsActive = isActive
     }
 
     fun selectMealType(isActive: Boolean, label: String) {
-        _uiState2.value.mealType = label
-        _uiState2.value.mealTypeIsActive = isActive
-
+        _uiFiltersState.value.mealType = label
+        _uiFiltersState.value.mealTypeIsActive = isActive
     }
 
+    fun selectHealth(isActive: Boolean, label: String) {
+        _uiFiltersState.value.health = label
+        _uiFiltersState.value.healthIsActive = isActive
+    }
 
-    fun searchRecipes( query: String, diet: String, mealType: String, cuisineType: String ) {
-        Log.d("VAMOSPRODUZIR", "|||||||:  $cuisineType ||||| $diet |||$mealType")
-
-        Log.d("RECEITA", "searchRecipes: chama view model")
-
-
-         if (uiState2.value.mealTypeIsActive && _uiState2.value.dietIsActive &&  _uiState2.value.cuisineTypeIsActive ) {
+    fun searchRecipes( query: String, diet: String, mealType: String, cuisineType: String, health: String ) {
+         if (uiFiltersState.value.mealTypeIsActive && _uiFiltersState.value.dietIsActive &&  _uiFiltersState.value.cuisineTypeIsActive ) {
             Log.d("VAMOSPRODUZIR", "all:  $cuisineType ||||| $diet$mealType")
 
-            searchRecipesByAll( query, diet = diet, cuisineType = cuisineType, typeOfMeal = mealType ).onEach {result ->
+            searchRecipesByAll( query, diet = diet, cuisineType = cuisineType, typeOfMeal = mealType, health = health ).onEach {result ->
                 when (result) {
                     is Resource.Success -> { _state.value = HitListState(recipes = result.data ?: emptyList()) }
                     is Resource.Error -> { _state.value = HitListState(error = result.message ?: "An unexpected error occured") }
                     is Resource.Loading -> { _state.value = HitListState(isLoading = true) }
                 } }.launchIn(viewModelScope)
-        } else if (uiState2.value.cuisineTypeIsActive && _uiState2.value.mealTypeIsActive) {
+        } else if (uiFiltersState.value.cuisineTypeIsActive && _uiFiltersState.value.mealTypeIsActive) {
             Log.d("VAMOSPRODUZIR", "cui = meal:  $cuisineType ||||| $diet||||$mealType")
             searchRecipesUseCaseCuisineTypeAndTypeOfMeal( query, cuisineType = cuisineType, typeOfMeal = mealType ).onEach {result ->
                 when (result) {
@@ -129,7 +124,7 @@ class SearchRecipesViewModel @Inject constructor(
                     is Resource.Error -> { _state.value = HitListState(error = result.message ?: "An unexpected error occured") }
                     is Resource.Loading -> { _state.value = HitListState(isLoading = true) }
                 } }.launchIn(viewModelScope)
-        } else if (uiState2.value.cuisineTypeIsActive && _uiState2.value.dietIsActive) {
+        } else if (uiFiltersState.value.cuisineTypeIsActive && _uiFiltersState.value.dietIsActive) {
             Log.d("VAMOSPRODUZIR", "cuis + diet:  $cuisineType ||||| $diet$mealType")
             searchRecipesUseCaseCuisineTypeAndDiet( query, cuisineType = cuisineType, diet = diet ).onEach {result ->
                 when (result) {
@@ -138,7 +133,7 @@ class SearchRecipesViewModel @Inject constructor(
                     is Resource.Loading -> { _state.value = HitListState(isLoading = true) }
                 } }.launchIn(viewModelScope)
         }
-        else if (uiState2.value.mealTypeIsActive && _uiState2.value.dietIsActive) {
+        else if (uiFiltersState.value.mealTypeIsActive && _uiFiltersState.value.dietIsActive) {
             Log.d("VAMOSPRODUZIR", "meal + diet:  $cuisineType ||||| $diet|||$mealType")
 
             searchRecipesUseCaseDietAndTypeOfMeal( query, diet = cuisineType, typeOfMeal = mealType ).onEach {result ->
@@ -147,7 +142,7 @@ class SearchRecipesViewModel @Inject constructor(
                     is Resource.Error -> { _state.value = HitListState(error = result.message ?: "An unexpected error occured") }
                     is Resource.Loading -> { _state.value = HitListState(isLoading = true) }
                 } }.launchIn(viewModelScope)
-        }   else if (_uiState2.value.dietIsActive) {
+        }   else if (_uiFiltersState.value.dietIsActive) {
             Log.d("VAMOSPRODUZIR", "diet:  $cuisineType ||||| $diet|||$mealType")
             searchRecipesUseCaseByDiet( query, diet ).onEach {result ->
                 when (result) {
@@ -155,7 +150,7 @@ class SearchRecipesViewModel @Inject constructor(
                     is Resource.Error -> { _state.value = HitListState(error = result.message ?: "An unexpected error occured") }
                     is Resource.Loading -> { _state.value = HitListState(isLoading = true) }
                 } }.launchIn(viewModelScope)
-        } else if (uiState2.value.mealTypeIsActive) {
+        } else if (uiFiltersState.value.mealTypeIsActive) {
             Log.d("VAMOSPRODUZIR", "meal:  $cuisineType ||||| $diet|||$mealType")
             searchRecipesUseCaseByMealType( query, mealType ).onEach {result ->
                 when (result) {
@@ -163,7 +158,7 @@ class SearchRecipesViewModel @Inject constructor(
                     is Resource.Error -> { _state.value = HitListState(error = result.message ?: "An unexpected error occured") }
                     is Resource.Loading -> { _state.value = HitListState(isLoading = true) }
                 } }.launchIn(viewModelScope)
-        } else if (uiState2.value.cuisineTypeIsActive) {
+        } else if (uiFiltersState.value.cuisineTypeIsActive) {
             Log.d("VAMOSPRODUZIR", "cuis:  $cuisineType ||||| $diet|||$mealType")
 
             searchRecipesUseCaseByCuisineType( query, cuisineType ).onEach {result ->
@@ -172,7 +167,16 @@ class SearchRecipesViewModel @Inject constructor(
                     is Resource.Error -> { _state.value = HitListState(error = result.message ?: "An unexpected error occured") }
                     is Resource.Loading -> { _state.value = HitListState(isLoading = true) }
                 } }.launchIn(viewModelScope)
-        } else {
+        } else if (uiFiltersState.value.healthIsActive) {
+             Log.d("VAMOSPRODUZIR", "cuis:  $cuisineType ||||| $diet|||$mealType")
+
+             searchRecipesUseCaseByHealth( query, health ).onEach {result ->
+                 when (result) {
+                     is Resource.Success -> { _state.value = HitListState(recipes = result.data ?: emptyList()) }
+                     is Resource.Error -> { _state.value = HitListState(error = result.message ?: "An unexpected error occured") }
+                     is Resource.Loading -> { _state.value = HitListState(isLoading = true) }
+                 } }.launchIn(viewModelScope)
+         }else {
              searchRecipesUseCase( query ).onEach {result ->
                  when (result) {
                      is Resource.Success -> { _state.value = HitListState(recipes = result.data ?: emptyList()) }
@@ -182,24 +186,21 @@ class SearchRecipesViewModel @Inject constructor(
          }
     }
 
-     fun getRecipesByTypeOfMeal(mealType: String ) {
+     private fun getRecipesByTypeOfMeal(mealType: String ) {
         getRecipesUseCase(mealType).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     _state.value = HitListState(recipes = result.data ?: emptyList())
                 }
-
                 is Resource.Error -> {
                     _state.value = HitListState(
                         error = result.message ?: "An unexpected error occured"
                     )
                 }
-
                 is Resource.Loading -> {
                     _state.value = HitListState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)
-
     }
 }

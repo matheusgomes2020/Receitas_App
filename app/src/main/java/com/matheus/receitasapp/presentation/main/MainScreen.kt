@@ -1,5 +1,6 @@
 package com.matheus.receitasapp.presentation.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import com.matheus.receitasapp.navigation.NavDestinations.Main.MAIN
 import com.matheus.receitasapp.navigation.graphs.mainNavGraph
 import com.matheus.receitasapp.navigation.graphs.recipeDetailsNavGraph2
 import com.matheus.receitasapp.navigation.utils.Screen
+import com.matheus.receitasapp.ui.theme.GreenApp
 import com.matheus.receitasapp.utils.BottomNavBar
 
 @Composable
@@ -54,6 +56,7 @@ fun MainScreen() {
             navController = navController,
             startDestination = MAIN,
             modifier = Modifier.padding(paddingValues)
+
         ) {
 
             mainNavGraph(navController, false)

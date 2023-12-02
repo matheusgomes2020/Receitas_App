@@ -11,7 +11,7 @@ const val KEY_FILTER_DATA = "filter_data"
 
 data class FilterData(
     val diet: String,
-    //val health: String,
+    val health: String,
     val cuisineType: String,
     val mealType: String,
     //val dishType: String,
@@ -22,7 +22,7 @@ class FilterViewModel(
 ):ViewModel() {
     data class UiState(
         val diet: String = "",
-        //val health: String = "",
+        val health: String = "",
         val cuisineType: String = "",
         val mealType: String = "",
        // val dishType: String = "",
@@ -37,7 +37,7 @@ class FilterViewModel(
         savedStateHandle.get<FilterData>( KEY_FILTER_DATA )?.let { filterData ->
             _uiState.update {
                 it.copy( diet = filterData.diet, cuisineType = filterData.cuisineType,
-                    //health = filterData.health,
+                    health = filterData.health,
                     mealType = filterData.mealType,
                    // dishType = filterData.dishType
                 )
@@ -74,11 +74,17 @@ class FilterViewModel(
         }
     }
 
-//    fun selectHealth(health: String) {
-//        _uiState.update {
-//            it.copy(health = health)
-//        }
-//    }
+    fun selectHealth(health: String) {
+        _uiState.update {
+            it.copy(health = health)
+        }
+    }
+
+    fun deselectHealth() {
+        _uiState.update {
+            it.copy(health = "")
+        }
+    }
 
     fun selectMealType(mealType: String) {
         _uiState.update {
@@ -96,7 +102,7 @@ class FilterViewModel(
             it.copy(clearAllFilters = true,
                 //dishType = "",
                 mealType = "",
-               // health = "",
+                health = "",
                 cuisineType = "", diet = "")
         }
     }

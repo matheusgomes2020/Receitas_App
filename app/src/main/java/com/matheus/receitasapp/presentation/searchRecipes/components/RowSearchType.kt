@@ -6,11 +6,13 @@ data class RowSearchType(
 
 val mealTypesList = listOf("BreakFast", "Dinner", "Lunch", "Snack", "TeaTime")
 
-val cuisineTypesList = listOf("American", "Asian", "British", "Chinese", "French")
+val cuisineTypesList = listOf("American", "Asian", "British", "Chinese", "Eastern Europe", "French", "Indian", "Italian",
+    "Japanese", "Kosher", "Mediterranean", "Mexican", "Middle Eastern", "Nordic", "South American", "South East Asian")
 
-val dietTypesList = listOf("balanced", "high-fiber", "low-carb", "low-fat", "low-sodium"
+val dietTypesList = listOf("balanced", "high-fiber", "high-protein", "low-carb", "low-fat", "low-sodium")
 
-)
+val healthTypesList = listOf("alcohol-free", "dairy-free", "egg-free", "fish-free", "gluten-free", "low-sugar",
+    "no-oil-added", "peanut-free", "pescatarian", "pork-free", "red-meat-free", "vegan")
 
 val mealTypes = listOf(
     RowSearchType(
