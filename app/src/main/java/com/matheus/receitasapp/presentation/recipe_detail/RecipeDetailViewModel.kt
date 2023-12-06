@@ -46,6 +46,7 @@ class RecipeDetailViewModel @Inject constructor(
                 is Resource.Success -> {
                     _uiState.update { currentState ->
                         currentState.copy(
+                            id = result.data?.recipe?.uri,
                             image = result.data?.recipe?.image,
                             totalTime = result.data?.recipe?.totalTime?.roundToInt().toString(),
                             calories = result.data?.recipe?.calories?.roundToInt().toString(),

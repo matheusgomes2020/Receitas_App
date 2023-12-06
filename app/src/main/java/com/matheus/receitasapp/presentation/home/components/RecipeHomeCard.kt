@@ -1,8 +1,10 @@
 package com.matheus.receitasapp.presentation.home.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -41,9 +43,26 @@ fun RecipeHomeCard(
 
     val qtd = recipe.ingredients.size
     val totalTime = recipe.totalTime.roundToInt().toString()
-    var s: String = recipe.uri
-    var s1: String = s.substring(s.indexOf("_")+1)
+    val image = recipe.image
+    val label = recipe.label
+    var uri: String = recipe.uri
+    var uriToId: String = uri.substring(uri.indexOf("_")+1)
 
+    RecipeCard(navController, uriToId, image, label, qtd, totalTime, {})
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun RecipeCard(
+    navController: NavController,
+    id: String,
+    image: String,
+    label: String,
+    qtd: Int,
+    totalTime: String,
+    deleteMovie: () -> Unit
+) {
     Column {
         Surface(
             shape = RoundedCornerShape(DpDimensions.Small),
@@ -51,14 +70,21 @@ fun RecipeHomeCard(
             modifier = Modifier
                 .width(200.dp)
                 .height(300.dp)
-                .clickable {
-                    navController.navigate("${NavDestinations.RecipeDetails.RECIPE_DETAILS}/${s1}")
-                }
+                .combinedClickable(
+                    onClick = {
+                        navController.navigate("${NavDestinations.RecipeDetails.RECIPE_DETAILS}/${id}")
+                    },
+                    onLongClick = {
+                        deleteMovie()
+                    }
+                )
+
         ) {
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = recipe.image),
-                    contentDescription = "",
+                    model = image
+                ),
+                contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .width(170.dp)
@@ -70,24 +96,25 @@ fun RecipeHomeCard(
         }
         Column(
             modifier = Modifier
-                .padding( horizontal = 1.dp, vertical = DpDimensions.Small7 )
+                .padding(horizontal = 1.dp, vertical = DpDimensions.Small7)
         ) {
             Text(
                 modifier = Modifier
                     .width(170.dp),
-                text = recipe.label,
+                text = label,
                 fontFamily = fontFamily3,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 15.sp,
                 maxLines = 1
             )
-            Text(text = "$qtd ingredients - $totalTime min",
+            Text(
+                text = "$qtd ingredients - $totalTime min",
                 color = Grey46,
                 fontFamily = fontFamily3,
-                fontSize = 13.sp)
+                fontSize = 13.sp
+            )
         }
     }
-
 }
 
 @Preview

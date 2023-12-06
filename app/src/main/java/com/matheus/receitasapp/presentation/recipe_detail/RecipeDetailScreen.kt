@@ -21,12 +21,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,20 +52,56 @@ import com.matheus.receitasapp.common.ShimmerRecipeDetail
 import com.matheus.receitasapp.data.remote.dto.Ingredient
 import com.matheus.receitasapp.presentation.recipe_detail.components.IngredientsDetail
 import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
+import com.matheus.receitasapp.presentation.recipes.AddRecipeEvent
+import com.matheus.receitasapp.presentation.recipes.AddRoomRecipeViewModel
 import com.matheus.receitasapp.ui.theme.AppColor
 import com.matheus.receitasapp.ui.theme.GreenParsley
 import com.matheus.receitasapp.ui.theme.Grey46
 import com.matheus.receitasapp.ui.theme.RedTomato
-import java.math.RoundingMode
-import java.text.DecimalFormat
+import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.roundToInt
 
 @Composable
 fun RecipeDetailScreen(
     navController: NavController,
-    viewModel: RecipeDetailViewModel = hiltViewModel()
+    viewModel: RecipeDetailViewModel = hiltViewModel(),
+    addRecipeViewModel: AddRoomRecipeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+
+   // val idState =
+    addRecipeViewModel.onEvent(AddRecipeEvent.EnteredTitle(uiState.label.toString()))
+    addRecipeViewModel.onEvent(AddRecipeEvent.EnteredTime(uiState.totalTime.toString()))
+    addRecipeViewModel.onEvent(AddRecipeEvent.EnteredImage(uiState.image.toString()))
+    addRecipeViewModel.onEvent(AddRecipeEvent.EnteredIngredients(uiState.ingredients.size.toString()))
+    addRecipeViewModel.onEvent(AddRecipeEvent.EnteredId(uiState.id.toString()))
+
+//    val titleState = addRecipeViewModel.recipeTitle.value
+//    val timeState = addRecipeViewModel.recipeTime.value
+//    val ingredientsState = addRecipeViewModel.recipeIngredients.value
+//    val imageState = addRecipeViewModel.recipeImage.value
+
+    val scaffoldState = rememberScaffoldState()
+
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = true) {
+        addRecipeViewModel.eventFlow.collectLatest { event ->
+            when(event) {
+                is AddRoomRecipeViewModel.UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
+                }
+                is AddRoomRecipeViewModel.UiEvent.SaveRecipe -> {
+                    navController.navigateUp()
+                }
+            }
+        }
+    }
+
+
     //val state = viewModel.state.value
 
 
@@ -97,7 +136,7 @@ fun RecipeDetailScreen(
                 .background(Color.White)
                 .verticalScroll(rememberScrollState())
         ) {
-            uiState.image?.let { TopContainer(image = it, navController) }
+            uiState.image?.let { TopContainer(image = it, navController, addRecipeViewModel = addRecipeViewModel) }
             Column(
                 verticalArrangement = Arrangement.Bottom,
                 modifier = Modifier
@@ -114,7 +153,7 @@ fun RecipeDetailScreen(
 
 }
 @Composable
-fun TopContainer(image: String, navController: NavController){
+fun TopContainer( image: String, navController: NavController, addRecipeViewModel: AddRoomRecipeViewModel ){
     Surface(
         shape = RoundedCornerShape(bottomStart = DpDimensions.Dp30, bottomEnd = DpDimensions.Dp30),
         modifier = Modifier
@@ -160,7 +199,10 @@ fun TopContainer(image: String, navController: NavController){
                         , modifier = Modifier
                             .background(Color.White)
                             .padding(DpDimensions.Small)
-                            .size(22.dp))
+                            .size(22.dp)
+                            .clickable {
+                                addRecipeViewModel.onEvent(AddRecipeEvent.SaveRecipe)
+                            })
                 }
             }
         }

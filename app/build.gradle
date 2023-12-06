@@ -87,6 +87,11 @@ dependencies {
     implementation('io.coil-kt:coil-compose:2.4.0')
     implementation("io.coil-kt:coil:2.4.0")
 
+    // Room components
+    implementation "androidx.room:room-ktx:$rootProject.room_version"
+    kapt "androidx.room:room-compiler:$rootProject.room_version"
+    androidTestImplementation "androidx.room:room-testing:$rootProject.room_version"
+
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")

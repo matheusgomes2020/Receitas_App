@@ -9,6 +9,7 @@ data class UiStateRecipeDetail(
     val isError: Boolean = false,
     //data class Content(
     val label: String? = null,
+    val id: String? = null,
     val image: String? = null,
     val totalTime: String? = null,
     val calories: String? = null,
