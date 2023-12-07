@@ -1,27 +1,31 @@
 package com.matheus.receitasapp.presentation.home.components
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -29,9 +33,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.data.remote.dto.Recipe
 import com.matheus.receitasapp.navigation.NavDestinations
+import com.matheus.receitasapp.presentation.favorites.components.DeleteRecipeBottomSheet
 import com.matheus.receitasapp.ui.theme.Grey46
-import com.matheus.receitasapp.ui.theme.ReceitasAppTheme
-import com.matheus.receitasapp.ui.theme.RoyalBlue65
 import com.matheus.receitasapp.ui.theme.fontFamily3
 import kotlin.math.roundToInt
 
@@ -52,7 +55,7 @@ fun RecipeHomeCard(
 
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeCard(
     navController: NavController,
@@ -61,12 +64,18 @@ fun RecipeCard(
     label: String,
     qtd: Int,
     totalTime: String,
-    deleteMovie: () -> Unit
+    deleteRecipe: () -> Unit
 ) {
+
+    val context = LocalContext.current
+    val bottomSheetState = rememberModalBottomSheetState()
+    var isDeleteSheetOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
+
     Column {
         Surface(
             shape = RoundedCornerShape(DpDimensions.Small),
-            color = RoyalBlue65,
             modifier = Modifier
                 .width(200.dp)
                 .height(300.dp)
@@ -75,24 +84,29 @@ fun RecipeCard(
                         navController.navigate("${NavDestinations.RecipeDetails.RECIPE_DETAILS}/${id}")
                     },
                     onLongClick = {
-                        deleteMovie()
+                        isDeleteSheetOpen
+                        //deleteMovie()
                     }
                 )
 
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(
-                    model = image
-                ),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .width(170.dp)
-//                    .width(200.dp)
-//                    .height(300.dp),
-                    .height(250.dp),
-            )
 
+            Box( modifier = Modifier
+                .width(170.dp)
+                .height(250.dp)
+                .background(
+                    brush = Brush.verticalGradient(
+                        listOf(
+                            Color.Transparent,
+                            Color.Transparent,
+                            Color.Black
+                        )
+                    ),
+                )
+                .paint(
+                    painter = rememberAsyncImagePainter( model = image ),
+                    contentScale = ContentScale.Crop
+                ))
         }
         Column(
             modifier = Modifier
@@ -115,27 +129,17 @@ fun RecipeCard(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun aa() {
-    ReceitasAppTheme {
-      Column(
-          modifier = Modifier
-              .fillMaxWidth()
-              .background(Color.White)
-
-      ) {
-          LazyRow(
-              horizontalArrangement = Arrangement.spacedBy(DpDimensions.Normal),
-              modifier = Modifier,
-              contentPadding = PaddingValues(horizontal = DpDimensions.Dp20, vertical = DpDimensions.Dp20)
-          ){
-              items(3) {
-                 // TopCard()
-              }
-          }
-      }
+    if ( isDeleteSheetOpen ) {
+        DeleteRecipeBottomSheet(
+            name = label,
+            bottomSheetState = bottomSheetState,
+            onDismiss = { isDeleteSheetOpen = false }, onLogout = {
+                deleteRecipe().let {
+                    Toast.makeText(context, "${label} removido com sucesso!!!", Toast.LENGTH_SHORT).show()
+                }
+            },
+            onCancel = {
+                isDeleteSheetOpen = false
+            })
     }
 }

@@ -62,7 +62,7 @@ fun BottomNavBar(
                         shape = RoundedCornerShape(DpDimensions.Dp30)
                         shadowElevation = 3f
                     }
-                    .height(70.dp),
+                    .height(75.dp),
                 tonalElevation = 3.dp
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()

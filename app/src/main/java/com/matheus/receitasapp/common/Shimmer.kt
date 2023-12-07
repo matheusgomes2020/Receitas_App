@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +28,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,6 +67,7 @@ import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
 import com.matheus.receitasapp.ui.theme.AppColor
 import com.matheus.receitasapp.ui.theme.BlueGrey11
 import com.matheus.receitasapp.ui.theme.Grey46
+import com.matheus.receitasapp.ui.theme.RoyalBlue65
 import com.matheus.receitasapp.ui.theme.fontFamily2
 import com.matheus.receitasapp.ui.theme.fontFamily3
 import kotlin.math.roundToInt
@@ -90,6 +93,82 @@ fun ShimmerRecipeDetail(
             IngredientsContainerShimmer()
         }
 
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
+@Composable
+fun RecipeShimmerGridItem () {
+
+        Box(
+            modifier = Modifier
+            .width(100.dp)
+            .height(250.dp)
+                .clip(RoundedCornerShape(DpDimensions.Small))
+                .shimmerEffect(),
+            contentAlignment = Alignment.BottomStart
+        ) {
+            Column(
+                modifier = Modifier.padding(DpDimensions.Small)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(60.dp)
+                        .height(20.dp)
+                        .shimmerEffect(),
+                )
+            }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
+@Composable
+fun HomeCardShimmer() {
+    Column {
+        Surface(
+            shape = RoundedCornerShape(DpDimensions.Small),
+            color = RoyalBlue65,
+            modifier = Modifier
+                .width(200.dp)
+                .height(300.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .width(170.dp)
+                    .height(250.dp)
+                    .shimmerEffect()
+            )
+
+        }
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 1.dp, vertical = DpDimensions.Small)
+        ) {
+            Box(
+                modifier = Modifier
+                    .width(200.dp)
+                    .height(16.dp)
+                    .shimmerEffect()
+            )
+            Spacer(modifier = Modifier.height( DpDimensions.Smallest ))
+            Row {
+                Box(
+                    modifier = Modifier
+                        .width(130.dp)
+                        .height(15.dp)
+                        .shimmerEffect()
+                )
+                Spacer(modifier = Modifier.width( DpDimensions.Smallest ))
+                Box(
+                    modifier = Modifier
+                        .width(65.dp)
+                        .height(15.dp)
+                        .shimmerEffect()
+                )
+            }
+        }
     }
 }
 

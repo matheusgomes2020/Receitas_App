@@ -1,17 +1,15 @@
-package com.matheus.receitasapp.presentation.profile.components
+package com.matheus.receitasapp.presentation.favorites.components
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.matheus.receitasapp.data.remote.dto.Recipe
 import com.matheus.receitasapp.domain.model.RecipeRoom
 import com.matheus.receitasapp.presentation.home.components.RecipeCard
-import kotlin.math.roundToInt
 
 @Composable
 fun RecipeFavoritesCard(
     navController: NavController,
     recipe: RecipeRoom,
-    deleteMovie: () -> Unit
+    deleteRecipe: () -> Unit
 ) {
 
     val qtd = recipe.ingredients
@@ -21,6 +19,6 @@ fun RecipeFavoritesCard(
     var uri: String = recipe.id
     var uriToId: String = uri.substring(uri.indexOf("_")+1)
 
-    RecipeCard(navController, uriToId, image, label, qtd.toInt(), totalTime, deleteMovie)
+    RecipeCard(navController, uriToId, image, label, qtd.toInt(), totalTime, deleteRecipe)
 
 }

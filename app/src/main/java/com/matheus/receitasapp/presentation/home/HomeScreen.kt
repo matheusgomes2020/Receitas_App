@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
+import com.matheus.receitasapp.common.HomeCardShimmer
 import com.matheus.receitasapp.navigation.NavDestinations.SearchRecipes.SEARCH_RECIPES
 import com.matheus.receitasapp.presentation.common.CustomPadding
 import com.matheus.receitasapp.presentation.common.MainAppBar
@@ -69,7 +70,6 @@ fun HomeScreen(navController: NavController,
                 .verticalScroll(rememberScrollState())
                 .fillMaxSize()
         ) {
-
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(DpDimensions.Normal),
                     modifier = Modifier,
@@ -99,14 +99,15 @@ fun HomeScreen(navController: NavController,
                 )
             }
             if (stateBreakFast.isLoading) {
-                Text(
-                    text = "Carregando!!!",
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                )
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(DpDimensions.Normal),
+                    modifier = Modifier,
+                    contentPadding = PaddingValues(horizontal = DpDimensions.Normal, vertical = DpDimensions.Smallest)
+                ){
+                    items(3) {
+                        HomeCardShimmer()
+                    }
+                }
             }
             CustomPadding(
                 verticalPadding = 0.dp,
@@ -129,14 +130,15 @@ fun HomeScreen(navController: NavController,
                 )
             }
             if (stateSouthAmericanFood.isLoading) {
-                Text(
-                    text = "Carregando!!!",
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                )
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(DpDimensions.Normal),
+                    modifier = Modifier,
+                    contentPadding = PaddingValues(horizontal = DpDimensions.Normal, vertical = DpDimensions.Smallest)
+                ){
+                    items(3) {
+                        HomeCardShimmer()
+                    }
+                }
             }
 
         }

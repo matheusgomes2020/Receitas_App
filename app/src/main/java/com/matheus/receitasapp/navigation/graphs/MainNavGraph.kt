@@ -4,22 +4,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.matheus.receitasapp.navigation.NavDestinations
 import com.matheus.receitasapp.navigation.NavDestinations.Main.MAIN
-import com.matheus.receitasapp.navigation.recipeDetailsNavGraph
 import com.matheus.receitasapp.navigation.topRecipesNavGraph
 import com.matheus.receitasapp.navigation.utils.Screen
 import com.matheus.receitasapp.presentation.home.HomeScreen
 import com.matheus.receitasapp.presentation.ingredients.IngredientsScreen
-import com.matheus.receitasapp.presentation.profile.ProfileScreen
-import com.matheus.receitasapp.presentation.recipe_detail.RecipeDetailScreen
-import com.matheus.receitasapp.presentation.searchRecipes.SearchRecipesScreen
+import com.matheus.receitasapp.presentation.favorites.FavoritesScreen
 
 fun NavGraphBuilder.mainNavGraph(navController: NavController, isSystemInDarkTheme: Boolean) {
 
@@ -55,11 +48,11 @@ fun NavGraphBuilder.mainNavGraph(navController: NavController, isSystemInDarkThe
             IngredientsScreen(navController = navController)
         }
 
-        composable(route = Screen.Profile.route,
+        composable(route = Screen.Favorites.route,
             enterTransition = { enterTransitionAnimation },
             exitTransition = { exitTransitionAnimation }
         ) {
-            ProfileScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme)
+            FavoritesScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme)
         }
 
         searchScreenNavGraph( navController = navController )
