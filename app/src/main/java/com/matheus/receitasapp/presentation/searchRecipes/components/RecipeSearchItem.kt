@@ -40,13 +40,13 @@ import kotlin.math.roundToInt
 fun RecipeSearchItem(navController: NavController, recipe: Recipe) {
     val totalTime = recipe.totalTime.roundToInt().toString()
     val calories = recipe.calories.roundToInt().toString()
-    var s: String = recipe.uri
-    var s1: String = s.substring(s.indexOf("_")+1)
+    var id: String = recipe.uri
+    var idToUri: String = id.substring(id.indexOf("_")+1)
     Surface(
         modifier = Modifier
             .clickable {
                 navController
-                    .navigate(NavDestinations.RecipeDetails.RECIPE_DETAILS + "/${s1}")
+                    .navigate(NavDestinations.RecipeDetails.RECIPE_DETAILS + "/${idToUri}")
             }
             .fillMaxWidth()
             .background(Color.White),
@@ -72,7 +72,6 @@ fun RecipeSearchItem(navController: NavController, recipe: Recipe) {
                         .size(80.dp)
                         .clip(RoundedCornerShape(DpDimensions.Small)),
                     contentScale = ContentScale.Crop
-
                 )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(DpDimensions.Smallest),

@@ -66,6 +66,7 @@ import com.matheus.receitasapp.presentation.recipe_detail.components.Ingredients
 import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
 import com.matheus.receitasapp.ui.theme.AppColor
 import com.matheus.receitasapp.ui.theme.BlueGrey11
+import com.matheus.receitasapp.ui.theme.GreenApp
 import com.matheus.receitasapp.ui.theme.Grey46
 import com.matheus.receitasapp.ui.theme.RoyalBlue65
 import com.matheus.receitasapp.ui.theme.fontFamily2
@@ -80,7 +81,6 @@ fun ShimmerRecipeDetail(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
     ) {
         TopContainerShimmer()
         Column(
@@ -473,18 +473,16 @@ fun Modifier.shimmerEffect(): Modifier = composed {
 
             colors = if (isSystemInDarkTheme()) {
                 listOf(
-                    Color(0xFF464643),
-                    Color(0xFF3D3A3A),
-                    Color(0xFF333332)
+                    Color(0xFF165A31),
+                    Color(0xFF2FC069),
+                    Color(0xFF158140)
                 )
 
             } else {
                 listOf(
-                    Color(0xFFC9C9C3),
-                    Color(0xFFB8B5B5),
-                    Color(0xFFCECECA)
-
-
+                    Color(0xFF4DB978),
+                    Color(0xFF2FC069),
+                    Color(0xFF158140)
                 )
             },
             start = Offset( startOffsetX, 0f ),

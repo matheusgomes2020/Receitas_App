@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -61,17 +62,11 @@ fun FavoritesScreen(navController: NavController, isSystemInDarkTheme: Boolean,
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
+                //.verticalScroll(rememberScrollState())
                 .fillMaxSize()
         ) {
-            CustomPadding(
-                verticalPadding = 0.dp,
-                horizontalPadding = DpDimensions.Dp20
-            ) {
-                SubtitleHeader(title = "Receitas", isIconVisible = true, isSystemInDarkTheme = useDarkIcons )
-            }
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(DpDimensions.Dp20),
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(DpDimensions.Dp20),
                 modifier = Modifier,
                 contentPadding = PaddingValues(
                     horizontal = DpDimensions.Dp20,
