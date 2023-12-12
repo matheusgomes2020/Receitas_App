@@ -201,22 +201,19 @@ fun IngredientsContainerShimmer() {
 fun RecipeSearchItemShimmer() {
     Surface(
         modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(DpDimensions.Smallest),
         // shadowElevation = 3.dp,
     ) {
         Box(
             modifier = Modifier
-                .padding(DpDimensions.Smallest)
-                .background(Color.White),
+                .padding(DpDimensions.Smallest),
             //  contentAlignment = Alignment.Center
         ) {
 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White),
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(DpDimensions.Smallest),
                 verticalAlignment = Alignment.CenterVertically
             ) {

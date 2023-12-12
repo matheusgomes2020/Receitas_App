@@ -133,7 +133,7 @@ fun RecipeCard(
         DeleteRecipeBottomSheet(
             name = label,
             bottomSheetState = bottomSheetState,
-            onDismiss = { isDeleteSheetOpen = false }, onLogout = {
+            onDismiss = { isDeleteSheetOpen = false }, onDelete = {
                 deleteRecipe().let {
                     Toast.makeText(context, "${label} removido com sucesso!!!", Toast.LENGTH_SHORT).show()
                 }

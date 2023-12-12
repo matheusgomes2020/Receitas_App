@@ -1,5 +1,8 @@
 package com.matheus.receitasapp.presentation.recipe_detail
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,6 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -50,11 +54,15 @@ import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.common.ShimmerRecipeDetail
 import com.matheus.receitasapp.data.remote.dto.Ingredient
+import com.matheus.receitasapp.domain.model.RecipeRoom
 import com.matheus.receitasapp.presentation.recipe_detail.components.IngredientsDetail
 import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
 import com.matheus.receitasapp.presentation.recipes.AddRecipeEvent
 import com.matheus.receitasapp.presentation.recipes.AddRoomRecipeViewModel
+import com.matheus.receitasapp.presentation.recipes.GetRecipesViewModel
+import com.matheus.receitasapp.presentation.recipes.RecipesEvent
 import com.matheus.receitasapp.ui.theme.AppColor
+import com.matheus.receitasapp.ui.theme.GreenApp
 import com.matheus.receitasapp.ui.theme.GreenParsley
 import com.matheus.receitasapp.ui.theme.Grey46
 import com.matheus.receitasapp.ui.theme.RedTomato
@@ -65,9 +73,13 @@ import kotlin.math.roundToInt
 fun RecipeDetailScreen(
     navController: NavController,
     viewModel: RecipeDetailViewModel = hiltViewModel(),
-    addRecipeViewModel: AddRoomRecipeViewModel = hiltViewModel()
+    addRecipeViewModel: AddRoomRecipeViewModel = hiltViewModel(),
+    getRecipesViewModel: GetRecipesViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val stateRecipesRoom = getRecipesViewModel.state.value
+
+    val context = LocalContext.current
 
 
    // val idState =
@@ -86,6 +98,18 @@ fun RecipeDetailScreen(
 
     val scope = rememberCoroutineScope()
 
+    var recipeRoom = RecipeRoom(
+        image = "",
+        ingredients = "",
+        id = "",
+        time = "",
+        timestamp = 0,
+        title = uiState.label.toString()
+    )
+
+    Log.d("MERCADOLIVRE", "Recipe ROOM???CREATE: $recipeRoom")
+
+
     LaunchedEffect(key1 = true) {
         addRecipeViewModel.eventFlow.collectLatest { event ->
             when(event) {
@@ -95,26 +119,13 @@ fun RecipeDetailScreen(
                     )
                 }
                 is AddRoomRecipeViewModel.UiEvent.SaveRecipe -> {
-                    navController.navigateUp()
+                    //navController.navigateUp()
                 }
             }
         }
     }
 
 
-    //val state = viewModel.state.value
-
-
-
-//    state.recipe.let {
-//        if (it != null) {
-//            val name = it.recipe.label
-//            val totalIngredients = it.recipe.ingredients.size
-//            val calories = it.recipe.calories.roundToInt().toString()
-//            val totalTime = it.recipe.totalTime.roundToInt().toString()
-
-    //    }
-//    }
     if ( uiState.isError ) {
         Text(
             text = "Erro",
@@ -130,30 +141,59 @@ fun RecipeDetailScreen(
             ShimmerRecipeDetail()
     }
     else{
-        BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .verticalScroll(rememberScrollState())
-        ) {
-            uiState.image?.let { TopContainer(image = it, navController, addRecipeViewModel = addRecipeViewModel) }
-            Column(
-                verticalArrangement = Arrangement.Bottom,
-                modifier = Modifier
-                    .padding(start = DpDimensions.Dp25, top = 380.dp, end = DpDimensions.Dp25)
-            ) {
-                uiState.label?.let { uiState.calories?.let { it1 -> uiState.totalTime?.let { it2 -> DetailsContent( name = it, ingredientsQuantity = uiState.ingredients.size, calories = it1, totalTime = it2) } } }
-                Spacer(modifier = Modifier.height(DpDimensions.Small))
-                IngredientsContainer( uiState.ingredients)
+        var uri: String = uiState.id!!
+        var uriToId: String = uri.substring(uri.indexOf("_")+1)
+
+
+        stateRecipesRoom.recipes.let { recipeList ->
+
+            var isFavorite = false
+            var list = recipeList.filter { recipe ->
+                var uri2: String = recipe.id
+                var uriToId2: String = uri2.substring(uri2.indexOf("_")+1)
+                uriToId2 == uriToId
+            }
+            Log.d("MERCADOLIVRE", "RecipeDetailScreen: \n$recipeList \n$list | \n$uriToId")
+
+            if (!list.isNullOrEmpty()){
+                isFavorite = true
+                recipeRoom = list[0]
+                Log.d("MERCADOLIVRE", "Recipe ROOM???!NULL: $recipeRoom")
 
             }
 
+            BoxWithConstraints(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                uiState.image?.let { TopContainer(context = context,recipeRoom = recipeRoom, isFavorite = isFavorite, image = it, navController = navController, addRecipeViewModel = addRecipeViewModel, getRecipesViewModel = getRecipesViewModel) }
+                Column(
+                    verticalArrangement = Arrangement.Bottom,
+                    modifier = Modifier
+                        .padding(start = DpDimensions.Dp25, top = 380.dp, end = DpDimensions.Dp25)
+                ) {
+                    uiState.label?.let { uiState.calories?.let { it1 -> uiState.totalTime?.let { it2 -> DetailsContent( name = it, ingredientsQuantity = uiState.ingredients.size, calories = it1, totalTime = it2) } } }
+                    Spacer(modifier = Modifier.height(DpDimensions.Small))
+                    IngredientsContainer( uiState.ingredients)
+                }
+
+            }
         }
     }
 
 }
 @Composable
-fun TopContainer( image: String, navController: NavController, addRecipeViewModel: AddRoomRecipeViewModel ){
+fun TopContainer(
+    recipeRoom: RecipeRoom,
+    isFavorite: Boolean,
+    image: String,
+    navController: NavController,
+    addRecipeViewModel: AddRoomRecipeViewModel,
+    getRecipesViewModel: GetRecipesViewModel,
+    context: Context
+){
     Surface(
         shape = RoundedCornerShape(bottomStart = DpDimensions.Dp30, bottomEnd = DpDimensions.Dp30),
         modifier = Modifier
@@ -195,14 +235,41 @@ fun TopContainer( image: String, navController: NavController, addRecipeViewMode
                     .clip(RoundedCornerShape(DpDimensions.Dp50))
                     // .blur(radius = 16.dp)
                 ){
-                    Icon(tint = Color.Black, painter = painterResource(id = R.drawable.bookmark), contentDescription = ""
+                    var icon = if (isFavorite) R.drawable.bookmark_filled else R.drawable.bookmark
+                    Icon(tint = GreenApp, painter =
+                    painterResource(
+                        id = icon), contentDescription = ""
                         , modifier = Modifier
                             .background(Color.White)
                             .padding(DpDimensions.Small)
                             .size(22.dp)
                             .clickable {
-                                addRecipeViewModel.onEvent(AddRecipeEvent.SaveRecipe)
-                            })
+                                if (isFavorite)
+                                    getRecipesViewModel
+                                        .onEvent(RecipesEvent.DeleteRecipe(recipeRoom))
+                                        .let {
+                                            Toast
+                                                .makeText(
+                                                    context,
+                                                    "${recipeRoom.title} removida dos favoritos!!!",
+                                                    Toast.LENGTH_SHORT
+                                                )
+                                                .show()
+                                        }
+                                else addRecipeViewModel
+                                    .onEvent(AddRecipeEvent.SaveRecipe)
+                                    .let {
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "${recipeRoom.title} salva nos favoritos!!!",
+                                                Toast.LENGTH_SHORT
+                                            )
+                                            .show()
+                                    }
+
+                            }
+                    )
                 }
             }
         }
