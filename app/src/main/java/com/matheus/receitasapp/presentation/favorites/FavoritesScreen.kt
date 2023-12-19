@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -75,7 +76,10 @@ fun FavoritesScreen(navController: NavController, isSystemInDarkTheme: Boolean,
                             val result = scaffoldState.snackbarHostState.showSnackbar(
                                 message = "Recipe deleted",
                                 actionLabel = "Undo"
-                            )}
+                            )
+                            if(result == SnackbarResult.ActionPerformed) {
+                                viewModel.onEvent(RecipesEvent.RestoreRecipe)
+                            }}
                     } )
                 }
             }

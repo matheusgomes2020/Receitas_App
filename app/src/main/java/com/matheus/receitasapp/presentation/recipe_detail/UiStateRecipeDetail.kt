@@ -1,5 +1,6 @@
 package com.matheus.receitasapp.presentation.recipe_detail
 
+import com.matheus.receitasapp.data.remote.dto.Digest
 import com.matheus.receitasapp.data.remote.dto.Ingredient
 
 data class UiStateRecipeDetail(
@@ -14,6 +15,7 @@ data class UiStateRecipeDetail(
     val totalTime: String? = null,
     val calories: String? = null,
     val ingredients: List<Ingredient> = emptyList(),
+    val digest: List<Digest> = emptyList()
    // ) : UiState()
 //}
 

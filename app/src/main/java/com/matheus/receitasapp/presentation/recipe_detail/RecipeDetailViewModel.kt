@@ -52,6 +52,7 @@ class RecipeDetailViewModel @Inject constructor(
                             calories = result.data?.recipe?.calories?.roundToInt().toString(),
                             label = result.data?.recipe?.label,
                             ingredients = result.data?.recipe!!.ingredients,
+                            digest = result.data?.recipe!!.digest,
                             isLoading = false,
                             isError = false
                         )

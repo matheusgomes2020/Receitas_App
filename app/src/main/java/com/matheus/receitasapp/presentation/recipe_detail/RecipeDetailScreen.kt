@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,10 +50,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import co.yml.charts.common.model.PlotType
+import co.yml.charts.ui.piechart.charts.DonutPieChart
+import co.yml.charts.ui.piechart.models.PieChartConfig
+import co.yml.charts.ui.piechart.models.PieChartData
 import coil.compose.rememberAsyncImagePainter
 import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.common.ShimmerRecipeDetail
+import com.matheus.receitasapp.data.remote.dto.Digest
 import com.matheus.receitasapp.data.remote.dto.Ingredient
 import com.matheus.receitasapp.domain.model.RecipeRoom
 import com.matheus.receitasapp.presentation.recipe_detail.components.IngredientsDetail
@@ -62,6 +68,7 @@ import com.matheus.receitasapp.presentation.recipes.AddRoomRecipeViewModel
 import com.matheus.receitasapp.presentation.recipes.GetRecipesViewModel
 import com.matheus.receitasapp.presentation.recipes.RecipesEvent
 import com.matheus.receitasapp.ui.theme.AppColor
+import com.matheus.receitasapp.ui.theme.DarkGrey11
 import com.matheus.receitasapp.ui.theme.GreenApp
 import com.matheus.receitasapp.ui.theme.GreenParsley
 import com.matheus.receitasapp.ui.theme.Grey46
@@ -107,9 +114,6 @@ fun RecipeDetailScreen(
         title = uiState.label.toString()
     )
 
-    Log.d("MERCADOLIVRE", "Recipe ROOM???CREATE: $recipeRoom")
-
-
     LaunchedEffect(key1 = true) {
         addRecipeViewModel.eventFlow.collectLatest { event ->
             when(event) {
@@ -119,7 +123,6 @@ fun RecipeDetailScreen(
                     )
                 }
                 is AddRoomRecipeViewModel.UiEvent.SaveRecipe -> {
-                    //navController.navigateUp()
                 }
             }
         }
@@ -177,6 +180,7 @@ fun RecipeDetailScreen(
                     uiState.label?.let { uiState.calories?.let { it1 -> uiState.totalTime?.let { it2 -> DetailsContent( name = it, ingredientsQuantity = uiState.ingredients.size, calories = it1, totalTime = it2) } } }
                     Spacer(modifier = Modifier.height(DpDimensions.Small))
                     IngredientsContainer( uiState.ingredients)
+                    Infos( uiState.calories!!,uiState.digest )
                 }
 
             }
@@ -348,6 +352,223 @@ fun DetailsContent( name: String, ingredientsQuantity: Int, calories: String, to
 
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun Infos(calories: String,digest: List<Digest>){
+
+
+
+
+    val calories = calories
+    var carbohydrates = "Not informed"
+    var fat = "Not informed"
+    var sodium = "Not informed"
+    var protein = "Not informed"
+    var fiber = "Not informed"
+    var sugar = "Not informed"
+    var cholesterol = "Not informed"
+    var saturated = "Not informed"
+    var trans = "Not informed"
+    var polyunsaturated = "Not informed"
+    var monounsaturated = "Not informed"
+
+    var fats = digest.filter { it.label == "Fat" }
+    var carbs = digest.filter { it.label == "Carbs" }
+
+    for (i in fats) {
+        for (c in i.sub){
+            if (c.label == "Saturated") {
+                saturated = "${c.total.roundToInt()} g"
+            }
+            if (c.label == "Trans") {
+                trans = "${c.total.roundToInt()} g"
+            }
+            if (c.label == "Polyunsaturated") {
+                polyunsaturated = "${c.total.roundToInt()} g"
+            }
+            if (c.label == "Monounsaturated") {
+                monounsaturated = "${c.total.roundToInt()} g"
+            }
+        }
+    }
+
+    for (i in carbs) {
+        for (c in i.sub){
+            if (c.label == "Fiber") {
+                fiber = "${c.total.roundToInt()} mg"
+            }
+            if (c.label == "Sugars") {
+                sugar = "${c.total.roundToInt()} g"
+            }
+        }
+    }
+
+
+    for (i in digest) {
+        if (i.label == "Fat") {
+            fat = "${i.total.roundToInt()} g"
+        }
+        if (i.label == "Carbs") {
+            carbohydrates = "${i.total.roundToInt()} g"
+        }
+        if (i.label == "Protein") {
+            protein = "${i.total.roundToInt()} g"
+        }
+        if (i.label == "Sodium") {
+            sodium = "${i.total.roundToInt()} mg"
+        }
+        if (i.label == "Cholesterol") {
+            cholesterol = "${i.total.roundToInt()} mg"
+        }
+    }
+
+    Column {
+        Text(text = "Nutritional information's",
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 18.sp)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            val donutChartData = PieChartData(
+                slices = listOf(
+                    PieChartData.Slice("Carbs", 50f, Color(0xFF5F0A87)),
+                    PieChartData.Slice("Protein", 30f, Color(0xFF20BF55)),
+                    PieChartData.Slice("Fat", 20f,  Color(0xFFEC9F05)),
+                ),
+                plotType = PlotType.Donut
+            )
+
+            val donutChartConfig = PieChartConfig(
+                isAnimationEnable = true,
+                showSliceLabels = true,
+                labelVisible = true,
+                //percentageFontSize = 42.sp,
+                strokeWidth = 120f,
+                //percentColor = Color.Black,
+                activeSliceAlpha = .9f,
+            )
+
+            DonutPieChart(
+                modifier = Modifier
+                    .size(250.dp)
+                    .padding(DpDimensions.Normal),
+                donutChartData,
+                donutChartConfig
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                RowInfo(color = 0xFF5F0A87, text = "Carbs")
+                Spacer(modifier = Modifier.width(DpDimensions.Small))
+                RowInfo(color = 0xFF20BF55, text = "Protein")
+                Spacer(modifier = Modifier.width(DpDimensions.Small))
+                RowInfo(color = 0xFFEC9F05, text = "Fat")
+            }
+
+            androidx.compose.material.Card(
+                elevation = 4.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = DpDimensions.Normal
+                    )
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .padding(
+                            vertical = DpDimensions.Small,
+                            horizontal = DpDimensions.Normal)
+
+                ) {
+                    Text(text = "Calories",
+                        fontWeight = FontWeight.Bold)
+                    Text(text = "$calories kcal",
+                        fontWeight = FontWeight.Bold)
+                }
+            }
+            androidx.compose.material.Card(
+                elevation = 4.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 1.dp
+                    )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(vertical = DpDimensions.Small),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    RowInfoDetails(fontWeight = FontWeight.Bold, label = "Carbohydrates", unit = carbohydrates)
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = DpDimensions.Small)
+                    ) {
+                        RowInfoDetails(fontWeight = FontWeight.Normal, label = "Fiber", unit = fiber)
+                        RowInfoDetails(fontWeight = FontWeight.Normal, label = "Sugar", unit = sugar)
+                    }
+                    RowInfoDetails(fontWeight = FontWeight.Bold,label = "Protein", unit = protein)
+                    RowInfoDetails(fontWeight = FontWeight.Bold,label = "Fat", unit = fat)
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = DpDimensions.Small)
+                    ) {
+                        RowInfoDetails(fontWeight = FontWeight.Normal, label = "Saturated fat", unit = saturated)
+                        RowInfoDetails(fontWeight = FontWeight.Normal, label = "Mono unsaturated fat", unit = monounsaturated)
+                        RowInfoDetails(fontWeight = FontWeight.Normal, label = "poly unsaturated fat", unit = polyunsaturated)
+                        RowInfoDetails(fontWeight = FontWeight.Normal, label = "Trans fat", unit = trans)
+                        RowInfoDetails(fontWeight = FontWeight.Normal, label = "Cholesterol", unit = cholesterol)
+                    }
+                    RowInfoDetails(fontWeight = FontWeight.Bold,label = "Sodium", unit = sodium)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RowInfoDetails(fontWeight: FontWeight,label: String, unit: String) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = DpDimensions.Normal)
+    ) {
+        Text(
+            text = label,
+            fontWeight = fontWeight
+        )
+        Text(
+            text = unit,
+            fontWeight = fontWeight
+        )
+    }
+}
+
+@Composable
+private fun RowInfo(color: Long, text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(20.dp)
+                .clip(RoundedCornerShape(DpDimensions.Normal))
+                .background(Color(color))
+        )
+        Text(
+            modifier = Modifier
+                .padding(start = DpDimensions.Smallest),
+            text = text,
+            fontWeight = FontWeight.SemiBold,
+            color = DarkGrey11
+        )
     }
 }
 
