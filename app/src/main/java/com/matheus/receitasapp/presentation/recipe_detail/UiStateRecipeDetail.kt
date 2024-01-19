@@ -15,7 +15,19 @@ data class UiStateRecipeDetail(
     val totalTime: String? = null,
     val calories: String? = null,
     val ingredients: List<Ingredient> = emptyList(),
-    val digest: List<Digest> = emptyList()
+    //val instructionLines: List<String> = emptyList(),
+    val digest: List<Digest> = emptyList(),
+    val carbohydrates: String = "Not informed",
+    val fat: String = "Not informed",
+    val sodium: String = "Not informed",
+    var protein: String = "Not informed",
+    var fiber: String = "Not informed",
+    var sugar: String = "Not informed",
+    var cholesterol: String = "Not informed",
+    var saturated: String = "Not informed",
+    var trans: String = "Not informed",
+    var polyunsaturated: String = "Not informed",
+    var monounsaturated: String = "Not informed",
    // ) : UiState()
 //}
 

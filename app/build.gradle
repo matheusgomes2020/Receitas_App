@@ -5,6 +5,12 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+apply from: '../config/detekt/detekt.gradle'
+
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     namespace 'com.matheus.receitasapp'
     compileSdk 33
@@ -21,6 +27,11 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        // should correspond to key/value pairs inside the file
+        buildConfigField "String", "APP_ID", apikeyProperties['APP_ID']
+        buildConfigField "String", "APP_KEY", apikeyProperties['APP_KEY']
+        buildConfigField "String", "BASE_URL", '"https://api.edamam.com"'
     }
 
     buildTypes {
@@ -38,6 +49,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.3'
@@ -84,10 +96,14 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3"
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0"
     // Coil
     implementation('io.coil-kt:coil-compose:2.4.0')
     implementation("io.coil-kt:coil:2.4.0")
+
+    // Paging3
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation "androidx.paging:paging-compose:3.2.1"
 
     // Room components
     implementation "androidx.room:room-ktx:$rootProject.room_version"

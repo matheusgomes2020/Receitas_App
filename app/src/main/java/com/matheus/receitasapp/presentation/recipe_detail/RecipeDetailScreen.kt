@@ -19,11 +19,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
@@ -181,6 +183,14 @@ fun RecipeDetailScreen(
                     Spacer(modifier = Modifier.height(DpDimensions.Small))
                     IngredientsContainer( uiState.ingredients)
                     Infos( uiState.calories!!,uiState.digest )
+                    var aa = listOf(
+                        "On English muffin half, layer a tomato slice, a mozzarella slice, and half of the basil.",
+                        "Repeat layers.",
+                        "In a small bowl, combine olive oil, dash salt, and dash pepper.",
+                        "Drizzle over top.",
+                        "If desired, top with grape tomato halves."
+                    )
+                    InstructionsContainer(instructions = aa)
                 }
 
             }
@@ -355,12 +365,46 @@ fun DetailsContent( name: String, ingredientsQuantity: Int, calories: String, to
     }
 }
 
+@Composable
+fun InstructionsContainer( instructions: List<String>) {
+    Column(
+        modifier = Modifier
+            .padding(vertical = DpDimensions.Normal)
+            //.clip(RoundedCornerShape(DpDimensions.Normal))
+    ) {
+        Text(text = "Instructions",
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 18.sp)
+        Card(
+            elevation = 4.dp,
+            shape = RoundedCornerShape(DpDimensions.Normal),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = DpDimensions.Normal
+                )
+        ) {
+            var count = 0
+            LazyColumn(modifier = Modifier
+                .height(300.dp)
+                .padding(DpDimensions.Small)){
+                items(instructions) {
+                    count ++
+                    Text(text = "$count. $it" )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun InstructionItem(){
+    
+}
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Infos(calories: String,digest: List<Digest>){
-
-
-
 
     val calories = calories
     var carbohydrates = "Not informed"

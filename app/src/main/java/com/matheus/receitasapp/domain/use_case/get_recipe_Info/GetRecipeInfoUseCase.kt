@@ -24,7 +24,7 @@ class GetRecipeInfoUseCase @Inject constructor(
             emit( Resource.Loading<Hit>() )
             val recipe = repository.getRecipeInfo( query )
             emit(Resource.Success<Hit>(recipe))
-            Log.d("VAILOGO", ":SUCESSO USE CASE ${recipe} |")
+            Log.d("PORTEIRO", ":SUCESSO USE CASE ${recipe.recipe} |")
         } catch(e: HttpException) {
             emit(Resource.Error<Hit>(e.localizedMessage ?: "An unexpected error occured"))
             Log.d("VAILOGO", ":erro USE CASE  |${e.localizedMessage}")
