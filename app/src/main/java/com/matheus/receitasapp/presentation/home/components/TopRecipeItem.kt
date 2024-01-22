@@ -20,13 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.navigation.NavDestinations
-import com.matheus.receitasapp.presentation.recipe_detail.components.IngredientsDetail
+import com.matheus.receitasapp.presentation.recipe_detail.components.ItemDetail
 
 
 @Composable
 fun TopRecipeItem(
     navController: NavController,
-    ingredient: IngredientsDetail,
+    ingredient: ItemDetail,
             ) {
     Surface(
         shape = RoundedCornerShape(DpDimensions.Small),

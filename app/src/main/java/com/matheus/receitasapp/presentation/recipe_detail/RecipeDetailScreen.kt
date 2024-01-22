@@ -63,8 +63,8 @@ import com.matheus.receitasapp.common.ShimmerRecipeDetail
 import com.matheus.receitasapp.data.remote.dto.Digest
 import com.matheus.receitasapp.data.remote.dto.Ingredient
 import com.matheus.receitasapp.domain.model.RecipeRoom
-import com.matheus.receitasapp.presentation.recipe_detail.components.IngredientsDetail
-import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
+import com.matheus.receitasapp.presentation.recipe_detail.components.ItemDetail
+import com.matheus.receitasapp.presentation.recipe_detail.components.items
 import com.matheus.receitasapp.presentation.recipes.AddRecipeEvent
 import com.matheus.receitasapp.presentation.recipes.AddRoomRecipeViewModel
 import com.matheus.receitasapp.presentation.recipes.GetRecipesViewModel
@@ -649,7 +649,7 @@ fun IngredientsContainerTest2() {
             horizontalArrangement = Arrangement.spacedBy(DpDimensions.Small),
             modifier = Modifier,
             contentPadding = PaddingValues(vertical = DpDimensions.Dp20)){
-            items(ingredients) { ingredient ->
+            items(items) { ingredient ->
                 //IngredientItem(ingredient)
             }
         }
@@ -657,7 +657,7 @@ fun IngredientsContainerTest2() {
 }
 
 @Composable
-fun IngredientItemTest2(ingredientsDetail: IngredientsDetail) {
+fun IngredientItemTest2(ingredientsDetail: ItemDetail) {
 
     Column {
         Surface(
@@ -895,7 +895,7 @@ fun IngredientsContainerTest() {
             horizontalArrangement = Arrangement.spacedBy(DpDimensions.Small),
             modifier = Modifier,
             contentPadding = PaddingValues(vertical = DpDimensions.Dp20)){
-            items(ingredients) { ingredient ->
+            items(items) { ingredient ->
                 IngredientItemTest2(ingredient)
             }
         }

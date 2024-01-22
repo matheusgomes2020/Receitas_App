@@ -33,7 +33,7 @@ import com.matheus.receitasapp.presentation.common.MainAppBar
 import com.matheus.receitasapp.presentation.common.SubtitleHeader
 import com.matheus.receitasapp.presentation.home.components.RecipeHomeCard
 import com.matheus.receitasapp.presentation.home.components.TopRecipeItem
-import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
+import com.matheus.receitasapp.presentation.recipe_detail.components.items
 import com.matheus.receitasapp.presentation.searchRecipes.HitListState
 import com.matheus.receitasapp.ui.theme.DarkGrey11
 
@@ -75,7 +75,7 @@ fun HomeScreen(navController: NavController,
                     modifier = Modifier,
                     contentPadding = PaddingValues(horizontal = DpDimensions.Normal, vertical = DpDimensions.Smallest)
                 ){
-                    items(ingredients) { ingredient ->
+                    items(items) { ingredient ->
                         TopRecipeItem(navController,ingredient)
                     }
                 }

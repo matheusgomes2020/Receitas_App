@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.matheus.core.data.repository.RecipesRemoteDataSource
 import com.matheus.core.domain.model.Recipe2
 import com.matheus.receitasapp.framework.network.response.DataWrapperResponse
-import com.matheus.receitasapp.network.response.toRecipeModel
+import com.matheus.receitasapp.framework.network.response.toRecipeModel
 
 class RecipesPagingSource(
     private val remoteDataSource: RecipesRemoteDataSource<DataWrapperResponse>,
@@ -16,12 +16,16 @@ class RecipesPagingSource(
     @Suppress("TooGenericExceptionCaught")
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Recipe2> {
         return try {
-            val from = params.key ?: 0
+            val from = params.key ?: 1
             val to = from + LIMIT
+            //val cuisineType = "South American"
 
             val queries = hashMapOf(
                 "from" to from.toString(),
-                "to" to to.toString()
+                "to" to to.toString(),
+                //"cuisineType" to cuisineType
+
+
             )
 
             if (query.isNotEmpty()) {
@@ -36,10 +40,10 @@ class RecipesPagingSource(
 
             LoadResult.Page(
                 data = response.hits.map { it.recipe.toRecipeModel() },
-                prevKey = null,
+                prevKey = responseFrom - LIMIT,
                 nextKey = if (responseFrom < totalRecipes) {
                     responseFrom + LIMIT
-                    responseTo + LIMIT
+                    //responseTo + LIMIT
                 } else null
             )
 

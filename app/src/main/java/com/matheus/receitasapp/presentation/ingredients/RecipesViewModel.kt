@@ -20,27 +20,48 @@ class RecipesViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _recipesState: MutableStateFlow<PagingData<Recipe2>> = MutableStateFlow(value = PagingData.empty())
+    private val _recipesState2: MutableStateFlow<PagingData<Recipe2>> = MutableStateFlow(value = PagingData.empty())
     val recipesState: MutableStateFlow<PagingData<Recipe2>> get() = _recipesState
+    val recipesState2: MutableStateFlow<PagingData<Recipe2>> get() = _recipesState2
 
     init {
         onEvent(HomeEvent.GetHome)
+        onEvent2(HomeEvent2.GetHome2)
     }
 
-    fun onEvent(event: HomeEvent) {
+    private fun onEvent(event: HomeEvent) {
         viewModelScope.launch {
             when (event) {
                 is HomeEvent.GetHome -> {
-                    recipesPagingData("banana")
+                    recipesPagingData("tomato")
                 }
             }
         }
     }
 
-    suspend fun recipesPagingData(query: String) {
+    private fun onEvent2(event: HomeEvent2) {
+        viewModelScope.launch {
+            when (event) {
+                is HomeEvent2.GetHome2 -> {
+                    recipesPagingData2("milk")
+                }
+            }
+        }
+    }
+
+    private suspend fun recipesPagingData(query: String) {
          getRecipesUseCase(
             GetRecipesUseCase2.GetRecipesParams(query, getPageConfig())
         ).cachedIn(viewModelScope).collect{
             _recipesState.value = it
+        }
+    }
+
+    private suspend fun recipesPagingData2(query: String) {
+        getRecipesUseCase(
+            GetRecipesUseCase2.GetRecipesParams(query, getPageConfig())
+        ).cachedIn(viewModelScope).collect{
+            _recipesState2.value = it
         }
     }
 
@@ -53,4 +74,8 @@ class RecipesViewModel @Inject constructor(
 
 sealed class HomeEvent {
     object GetHome : HomeEvent()
+}
+
+sealed class HomeEvent2 {
+    object GetHome2 : HomeEvent2()
 }

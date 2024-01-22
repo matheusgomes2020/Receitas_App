@@ -1,15 +1,11 @@
 package com.matheus.receitasapp.common
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,12 +21,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,38 +32,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
-import com.matheus.receitasapp.R
-import com.matheus.receitasapp.data.remote.dto.Recipe
-import com.matheus.receitasapp.navigation.NavDestinations
-import com.matheus.receitasapp.presentation.recipe_detail.DetailsContentTest
-import com.matheus.receitasapp.presentation.recipe_detail.IngredientItemTest2
-import com.matheus.receitasapp.presentation.recipe_detail.IngredientsContainerTest
-import com.matheus.receitasapp.presentation.recipe_detail.TopContainerTest
-import com.matheus.receitasapp.presentation.recipe_detail.components.IngredientsDetail
-import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
-import com.matheus.receitasapp.ui.theme.AppColor
-import com.matheus.receitasapp.ui.theme.BlueGrey11
-import com.matheus.receitasapp.ui.theme.GreenApp
-import com.matheus.receitasapp.ui.theme.Grey46
 import com.matheus.receitasapp.ui.theme.RoyalBlue65
-import com.matheus.receitasapp.ui.theme.fontFamily2
-import com.matheus.receitasapp.ui.theme.fontFamily3
-import kotlin.math.roundToInt
 
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)

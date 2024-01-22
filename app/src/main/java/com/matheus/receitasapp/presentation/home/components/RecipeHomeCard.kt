@@ -1,5 +1,6 @@
 package com.matheus.receitasapp.presentation.home.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -50,6 +51,7 @@ fun RecipeHomeCard(
     val label = recipe.label
     var uri: String = recipe.uri
     var uriToId: String = uri.substring(uri.indexOf("_")+1)
+    Log.d("DICÇÃO", "IngredientsScreen: $uriToId")
 
     RecipeCard(navController, uriToId, image, label, qtd, totalTime, {})
 

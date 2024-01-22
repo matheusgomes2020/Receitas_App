@@ -45,7 +45,7 @@ fun NavGraphBuilder.mainNavGraph(navController: NavController, isSystemInDarkThe
             enterTransition = { enterTransitionAnimation },
             exitTransition = { exitTransitionAnimation }
         ) {
-            IngredientsScreen(navController = navController)
+            IngredientsScreen(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme)
         }
 
         composable(route = Screen.Favorites.route,
