@@ -1,22 +1,30 @@
 package com.matheus.receitasapp.presentation.home
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Surface
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,6 +35,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.common.HomeCardShimmer
+import com.matheus.receitasapp.navigation.NavDestinations
 import com.matheus.receitasapp.navigation.NavDestinations.SearchRecipes.SEARCH_RECIPES
 import com.matheus.receitasapp.presentation.common.CustomPadding
 import com.matheus.receitasapp.presentation.common.MainAppBar
@@ -55,6 +64,7 @@ fun HomeScreen(navController: NavController,
 
     val stateBreakFast =  viewModel.state.value
     val stateSouthAmericanFood =  viewModel.stateCuisineTyp.value
+
 
     Scaffold(
         topBar = {
@@ -89,14 +99,7 @@ fun HomeScreen(navController: NavController,
                 RecipeHomeCardCell( navController, stateBreakFast )
             }
             if (stateBreakFast.error.isNotBlank()) {
-                Text(
-                    text = stateBreakFast.error,
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                )
+                Error { viewModel.refreshBreakfast() }
             }
             if (stateBreakFast.isLoading) {
                 LazyRow(
@@ -120,14 +123,7 @@ fun HomeScreen(navController: NavController,
             }
 
             if (stateSouthAmericanFood.error.isNotBlank()) {
-                Text(
-                    text = stateBreakFast.error,
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                )
+                Error { viewModel.refreshSouthAmerican() }
             }
             if (stateSouthAmericanFood.isLoading) {
                 LazyRow(
@@ -165,4 +161,44 @@ private fun RecipeHomeCardCell( navController: NavController, state: HitListStat
 @Composable
 fun aa () {
     HomeScreen(navController = rememberNavController(), isSystemInDarkTheme = false )
+}
+
+
+@Composable
+fun Error(
+    onClick: () -> Unit
+){
+    Surface(
+        shape = RoundedCornerShape(DpDimensions.Small),
+        modifier = Modifier
+            .width(200.dp)
+            .height(300.dp)
+
+
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(DpDimensions.Normal),
+                modifier = Modifier.padding(
+                    horizontal = DpDimensions.Small
+                )
+            ) {
+                Text(text = "Error",
+                    fontWeight = FontWeight.Bold)
+                Text(text = "Ops, something went wrong. please try again")
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        onClick()
+                    }) {
+                    Text(text = "Try Again")
+                }
+            }
+        }
+
+    }
 }

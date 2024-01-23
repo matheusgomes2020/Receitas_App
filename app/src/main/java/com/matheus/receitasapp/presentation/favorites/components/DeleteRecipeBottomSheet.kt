@@ -58,13 +58,13 @@ fun DeleteRecipeBottomSheet(
                 .fillMaxWidth(),
         ) {
 
-            Text(text = "Remover favorito",
+            Text(text = "Remove favorite",
                 style = MaterialTheme.typography.titleLarge,
                 color = GreenApp)
 
             Spacer(modifier = Modifier.height(DpDimensions.Dp25))
             val aText = buildAnnotatedString {
-                append("Remover ")
+                append("Dou you want remove ")
                 withStyle(
                     style = SpanStyle(
                         fontWeight = FontWeight.Bold
@@ -72,7 +72,7 @@ fun DeleteRecipeBottomSheet(
                 ) {
                     append(name)
                 }
-                append(" dos favoritos?")
+                append("?")
             }
             Text(text = aText,
                 style = MaterialTheme.typography.bodyMedium,
@@ -82,8 +82,8 @@ fun DeleteRecipeBottomSheet(
             Spacer(modifier = Modifier.height(DpDimensions.Dp20))
 
             TwoButtonsColumn(
-                leftButtonText = "cancelar",
-                rightButtonText = "sim",
+                leftButtonText = "cancel",
+                rightButtonText = "yes",
                 onLeftButtonClick = { onCancel() },
                 onRightButtonClick = { onDelete(true) })
             Spacer(modifier = Modifier.height(DpDimensions.Dp40))

@@ -68,6 +68,14 @@ class HomeViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    fun refreshBreakfast() {
+        getRecipesByTypeOfMeal( "breakFast" )
+    }
+
+    fun refreshSouthAmerican() {
+        getRecipeByCuisineType( "South American" )
+    }
 }
 
 

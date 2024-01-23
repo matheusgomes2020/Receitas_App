@@ -20,6 +20,9 @@ import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
+import com.matheus.receitasapp.navigation.AppGraph
+import com.matheus.receitasapp.navigation.NavDestinations
+import com.matheus.receitasapp.navigation.NavDestinations.Settings.SETTINGS
 import com.matheus.receitasapp.presentation.common.MainAppBar
 import com.matheus.receitasapp.presentation.favorites.components.RecipeFavoritesCard
 import com.matheus.receitasapp.presentation.recipes.GetRecipesViewModel
@@ -50,7 +53,7 @@ fun FavoritesScreen(navController: NavController, isSystemInDarkTheme: Boolean,
         topBar = {
             MainAppBar(icon1 = R.drawable.adjustments, title = "Favorites" , imageUrl = "",
                 onSearchClick = {
-
+                    navController.navigate(NavDestinations.Settings.SETTINGS)
                 })
         }
     ) { paddingValues ->

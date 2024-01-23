@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.matheus.receitasapp.navigation.NavDestinations.Main.MAIN
 import com.matheus.receitasapp.navigation.graphs.mainNavGraph
 import com.matheus.receitasapp.navigation.graphs.recipeDetailsNavGraph2
+import com.matheus.receitasapp.navigation.graphs.settingsNavGraph
 import com.matheus.receitasapp.navigation.utils.Screen
 import com.matheus.receitasapp.utils.BottomNavBar
 
@@ -59,6 +60,7 @@ fun MainScreen() {
 
             mainNavGraph(navController, false)
             recipeDetailsNavGraph2(navController = navController)
+            //settingsNavGraph(navController)
 //            topCollectionsNavGraph(navController)
 //            topAuthorNavGraph(navController)
 //            discoverNavGraph(navController)

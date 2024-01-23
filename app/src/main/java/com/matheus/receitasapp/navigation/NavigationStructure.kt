@@ -65,4 +65,9 @@ object NavDestinations {
         const val TOP_RECIPES = "top_recipes"
     }
 
+    object Settings {
+        const val SETTINGS_MAIN = "settings_main"
+        const val SETTINGS = "settings"
+    }
+
 }

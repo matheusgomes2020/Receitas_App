@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -14,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,6 +29,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.matheus.core.domain.model.Recipe2
 import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
+import com.matheus.receitasapp.common.HomeCardShimmer
 import com.matheus.receitasapp.navigation.NavDestinations
 import com.matheus.receitasapp.presentation.common.CustomPadding
 import com.matheus.receitasapp.presentation.common.MainAppBar
@@ -32,7 +37,6 @@ import com.matheus.receitasapp.presentation.common.SubtitleHeader
 import com.matheus.receitasapp.presentation.home.components.RecipeCard
 import com.matheus.receitasapp.presentation.home.components.TopRecipeItem
 import com.matheus.receitasapp.presentation.recipe_detail.components.ingredients
-import com.matheus.receitasapp.presentation.recipe_detail.components.items
 import com.matheus.receitasapp.ui.theme.DarkGrey11
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -52,8 +56,8 @@ fun IngredientsScreen(navController: NavController,
         )
     }
 
-    val recipesPagingItems: LazyPagingItems<Recipe2> = viewModel.recipesState.collectAsLazyPagingItems()
-    val recipesPagingItems2: LazyPagingItems<Recipe2> = viewModel.recipesState2.collectAsLazyPagingItems()
+    val recipesPagingItemsTomato: LazyPagingItems<Recipe2> = viewModel.recipesState.collectAsLazyPagingItems()
+    val recipesPagingItemsMilk: LazyPagingItems<Recipe2> = viewModel.recipesState2.collectAsLazyPagingItems()
 
     Scaffold(
         topBar = {
@@ -101,27 +105,27 @@ fun IngredientsScreen(navController: NavController,
                     vertical = DpDimensions.Smallest
                 )
             ) {
-                items(recipesPagingItems.itemCount) { index ->
+                items(recipesPagingItemsTomato.itemCount) { index ->
                     RecipeCard(
                         navController = navController,
-                        id = recipesPagingItems[index]!!.uri,
-                        image = recipesPagingItems[index]!!.imageUrl,
-                        label = recipesPagingItems[index]!!.label,
-                        qtd = recipesPagingItems[index]!!.ingredientsQuantity.toInt(),
-                        totalTime = recipesPagingItems[index]!!.time
+                        id = recipesPagingItemsTomato[index]!!.uri,
+                        image = recipesPagingItemsTomato[index]!!.imageUrl,
+                        label = recipesPagingItemsTomato[index]!!.label,
+                        qtd = recipesPagingItemsTomato[index]!!.ingredientsQuantity.toInt(),
+                        totalTime = recipesPagingItemsTomato[index]!!.time
                     ) {
 
                     }
 
                 }
-                recipesPagingItems.apply {
+                recipesPagingItemsTomato.apply {
                     when {
                         loadState.refresh is LoadState.Loading -> {
                             item { PageLoader() }
                         }
 
                         loadState.refresh is LoadState.Error -> {
-                            val error = recipesPagingItems.loadState.refresh as LoadState.Error
+                            val error = recipesPagingItemsTomato.loadState.refresh as LoadState.Error
                             item {
                                 ErrorMessage(
                                     message = error.error.localizedMessage!!,
@@ -134,7 +138,7 @@ fun IngredientsScreen(navController: NavController,
                         }
 
                         loadState.append is LoadState.Error -> {
-                            val error = recipesPagingItems.loadState.append as LoadState.Error
+                            val error = recipesPagingItemsTomato.loadState.append as LoadState.Error
                             item {
                                 ErrorMessage(
                                     // modifier = Modifier,
@@ -165,27 +169,27 @@ fun IngredientsScreen(navController: NavController,
                     vertical = DpDimensions.Smallest
                 )
             ) {
-                items(recipesPagingItems2.itemCount) { index ->
+                items(recipesPagingItemsMilk.itemCount) { index ->
                     RecipeCard(
                         navController = navController,
-                        id = "r",
-                        image = recipesPagingItems2[index]!!.imageUrl,
-                        label = recipesPagingItems2[index]!!.label,
-                        qtd = recipesPagingItems2[index]!!.ingredientsQuantity.toInt(),
-                        totalTime = recipesPagingItems2[index]!!.time
+                        id = recipesPagingItemsMilk[index]!!.uri,
+                        image = recipesPagingItemsMilk[index]!!.imageUrl,
+                        label = recipesPagingItemsMilk[index]!!.label,
+                        qtd = recipesPagingItemsMilk[index]!!.ingredientsQuantity.toInt(),
+                        totalTime = recipesPagingItemsMilk[index]!!.time
                     ) {
 
                     }
 
                 }
-                recipesPagingItems2.apply {
+                recipesPagingItemsMilk.apply {
                     when {
                         loadState.refresh is LoadState.Loading -> {
                             item { PageLoader() }
                         }
 
                         loadState.refresh is LoadState.Error -> {
-                            val error = recipesPagingItems2.loadState.refresh as LoadState.Error
+                            val error = recipesPagingItemsMilk.loadState.refresh as LoadState.Error
                             item {
                                 ErrorMessage(
                                     message = error.error.localizedMessage!!,
@@ -198,7 +202,7 @@ fun IngredientsScreen(navController: NavController,
                         }
 
                         loadState.append is LoadState.Error -> {
-                            val error = recipesPagingItems2.loadState.append as LoadState.Error
+                            val error = recipesPagingItemsMilk.loadState.append as LoadState.Error
                             item {
                                 ErrorMessage(
                                     // modifier = Modifier,
@@ -274,7 +278,17 @@ fun IngredientsScreen(navController: NavController,
 
 @Composable
 fun PageLoader() {
-    Text(text = "PageLoader")
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(DpDimensions.Normal),
+        modifier = Modifier.width(500.dp)
+            .height(300.dp),
+        contentPadding = PaddingValues(
+           // horizontal = DpDimensions.Normal,
+            vertical = DpDimensions.Smallest)) {
+        items(3) {
+            HomeCardShimmer()
+        }
+    }
 }
 
 @Composable

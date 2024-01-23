@@ -149,7 +149,7 @@ fun RecipeCard2(
                             .size(30.dp)
                             .clickable {
                                        deleteRecipe().let {
-                                           Toast.makeText(context, "${label} removido com sucesso!!!", Toast.LENGTH_SHORT).show()
+                                           Toast.makeText(context, "$label removed!!!", Toast.LENGTH_SHORT).show()
                                        }
                             },
                         painter = painterResource(id = R.drawable.bookmark_filled), contentDescription = "bookmark filled icon",
@@ -167,7 +167,7 @@ fun RecipeCard2(
             bottomSheetState = bottomSheetState,
             onDismiss = { isDeleteSheetOpen = false }, onDelete = {
                 deleteRecipe().let {
-                    Toast.makeText(context, "${label} removido com sucesso!!!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "$label removed!!!", Toast.LENGTH_SHORT).show()
                     isDeleteSheetOpen = false
                 }
             },
