@@ -1,30 +1,37 @@
-package com.matheus.receitasapp.presentation.splash_screen
+package com.matheus.receitasapp.presentation.auth
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.matheus.receitasapp.navigation.NavDestinations
 import com.matheus.receitasapp.navigation.graphs.appMainNavGraph
-import com.matheus.receitasapp.navigation.graphs.authMainNavGraph
-import com.matheus.receitasapp.navigation.graphs.splashNavGraph
+import com.matheus.receitasapp.navigation.graphs.authNavGraph
+import com.matheus.receitasapp.ui.theme.ReceitasAppTheme
 
 @Composable
-fun SplashMain() {
+fun AuthMainScreen() {
     var navController = rememberNavController()
-
     Scaffold { paddingValues ->
         NavHost(
             navController.also { navController = it },
-            startDestination = NavDestinations.Splash.SPLASH_MAIN,
+            startDestination = NavDestinations.Auth.AUTH_MAIN,
             modifier = Modifier.padding(paddingValues)
         ) {
-            splashNavGraph(navController)
+            authNavGraph(navController)
+//            registrationNavGraph(navController)
             appMainNavGraph(navController)
-            authMainNavGraph(navController)
         }
     }
+}
 
+@Preview
+@Composable
+fun AuthMainScreenPreview() {
+    ReceitasAppTheme {
+        AuthMainScreen()
+    }
 }

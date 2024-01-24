@@ -7,6 +7,8 @@ import androidx.navigation.navigation
 import com.matheus.receitasapp.navigation.NavDestinations.MAIN_APP
 import com.matheus.receitasapp.navigation.utils.Screen
 import com.matheus.receitasapp.presentation.main.MainScreen
+import com.matheus.receitasapp.utils.slideInVerticallyEnterAnimation
+import com.matheus.receitasapp.utils.slideOutVerticallyEnterAnimation
 
 fun NavGraphBuilder.appMainNavGraph(navController: NavController) {
     navigation(
@@ -14,8 +16,8 @@ fun NavGraphBuilder.appMainNavGraph(navController: NavController) {
         startDestination = Screen.Home.route
     ) {
         composable(route = Screen.Home.route,
-          //  enterTransition = { slideInVerticallyEnterAnimation() },
-           // exitTransition = { slideOutVerticallyEnterAnimation() }
+            enterTransition = { slideInVerticallyEnterAnimation() },
+            exitTransition = { slideOutVerticallyEnterAnimation() }
              )
         {
             MainScreen()

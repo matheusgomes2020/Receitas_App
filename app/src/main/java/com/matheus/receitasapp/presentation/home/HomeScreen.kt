@@ -75,10 +75,12 @@ fun HomeScreen(navController: NavController,
         }
     ) { paddingValues ->
         Column(
+
             modifier = Modifier
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
                 .fillMaxSize()
+
         ) {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(DpDimensions.Normal),

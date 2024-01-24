@@ -41,7 +41,8 @@ import com.matheus.receitasapp.ui.theme.ReceitasAppTheme
 fun BottomNavBar(
     modifier: Modifier = Modifier,
     navController: NavController,
-    visible: Boolean = true
+    visible: Boolean = true,
+    isSystemInDarkMode: Boolean
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -53,7 +54,7 @@ fun BottomNavBar(
                 .padding(DpDimensions.Small)
         ) {
             NavigationBar(
-                containerColor = if (isSystemInDarkTheme()) DarkGrey11 else White,
+                containerColor = if (isSystemInDarkMode) DarkGrey11 else White,
 
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,6 +113,6 @@ fun BottomNavBar(
 @Composable
 fun BottomNavBarPreview() {
     ReceitasAppTheme {
-        BottomNavBar(navController = rememberNavController())
+        BottomNavBar(navController = rememberNavController(), isSystemInDarkMode = true)
     }
 }

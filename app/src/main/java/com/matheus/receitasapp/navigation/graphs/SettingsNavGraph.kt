@@ -12,7 +12,7 @@ import com.matheus.receitasapp.navigation.NavDestinations.Settings.SETTINGS
 import com.matheus.receitasapp.navigation.NavDestinations.Settings.SETTINGS_MAIN
 import com.matheus.receitasapp.presentation.settings.SettingsScreen
 
-fun NavGraphBuilder.settingsNavGraph(navController: NavController) {
+fun NavGraphBuilder.settingsNavGraph(navController: NavController, isSystemInDarkTheme: Any?) {
 
     val enterTransitionAnimation = slideInVertically(
         animationSpec = tween(700),
