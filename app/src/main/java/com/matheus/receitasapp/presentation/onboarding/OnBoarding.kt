@@ -11,7 +11,7 @@ data class OnBoarding(
 
 
 val onBoardingItems = listOf(
-    OnBoarding(image = R.drawable.vinegar, title = R.string.favorites),
-    OnBoarding(image = R.drawable.boiledegg, title = R.string.home),
-    OnBoarding(image = R.drawable.bread, title = R.string.ingredients),
+    OnBoarding(image = R.drawable.vinegar, title = R.string.favorites_onboarding),
+    OnBoarding(image = R.drawable.search, title = R.string.search_onboarding),
+    OnBoarding(image = R.drawable.bread, title = R.string.ingredients_onboarding),
 )

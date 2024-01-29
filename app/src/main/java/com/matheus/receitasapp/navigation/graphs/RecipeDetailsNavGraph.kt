@@ -10,7 +10,7 @@ import com.matheus.receitasapp.navigation.NavDestinations.RecipeDetails.RECIPE_D
 import com.matheus.receitasapp.navigation.NavDestinations.RecipeDetails.RECIPE_DETAILS_MAIN
 import com.matheus.receitasapp.presentation.recipe_detail.RecipeDetailScreen
 
-fun NavGraphBuilder.recipeDetailsNavGraph2(navController: NavController) {
+fun NavGraphBuilder.recipeDetailsNavGraph2(navController: NavController, isSystemInDarkTheme: Boolean) {
     navigation(
         startDestination = RECIPE_DETAILS,
         route = RECIPE_DETAILS_MAIN

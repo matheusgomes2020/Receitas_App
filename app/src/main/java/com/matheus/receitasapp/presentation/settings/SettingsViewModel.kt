@@ -20,6 +20,7 @@ class SettingsViewModel @Inject constructor(
     val switchState = _switchState.asStateFlow()
 
     val isDarkModeEnabled = preferenceRepository.isDarkModeEnabled
+    val isOnboardingEnabled = preferenceRepository.isOnboardingEnabled
 
     fun onCheckChange(isChecked: Boolean) {
         _switchState.update {
@@ -30,6 +31,12 @@ class SettingsViewModel @Inject constructor(
     fun setDarkModel(isSet: Boolean) {
         viewModelScope.launch {
             preferenceRepository.setDarkMode(isSet)
+        }
+    }
+
+    fun setIsOnboarding(isSet: Boolean) {
+        viewModelScope.launch {
+            preferenceRepository.setOnboarding(isSet)
         }
     }
 

@@ -63,7 +63,7 @@ fun MainScreen() {
         ) {
 
             mainNavGraph(navController, isSystemInDarkTheme)
-            recipeDetailsNavGraph2(navController = navController)
+            recipeDetailsNavGraph2(navController = navController, isSystemInDarkTheme)
             //settingsNavGraph(navController)
 //            topCollectionsNavGraph(navController)
 //            topAuthorNavGraph(navController)

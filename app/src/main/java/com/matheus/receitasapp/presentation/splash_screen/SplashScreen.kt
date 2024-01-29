@@ -47,6 +47,10 @@ fun SplashScreen(navController: NavController) {
     val viewModel: SplashViewModel = hiltViewModel()
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle(initialValue = false)
 
+    val isOnboardingEnabled by settingsViewModel.isOnboardingEnabled.collectAsStateWithLifecycle(
+        initialValue = false
+    )
+
     SideEffect {
         systemUiController.setSystemBarsColor(
             color = if (useDarkIcons)
@@ -56,11 +60,11 @@ fun SplashScreen(navController: NavController) {
     }
 
     LaunchedEffect(key1 = true) {
-        //delay(3_000)
-        delay(100)
+        delay(3_000)
+        //delay(100)
         navController.navigate(
-            if (isLoggedIn) NavDestinations.MAIN_APP
-            else NavDestinations.Auth.AUTH
+            if (!isOnboardingEnabled) NavDestinations.Auth.AUTH
+            else NavDestinations.MAIN_APP
         ) {
             popUpTo(NavDestinations.Splash.SPLASH_MAIN) {
                 inclusive = true

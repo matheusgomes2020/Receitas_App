@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
+import com.matheus.receitasapp.ui.theme.GreenApp
 import com.matheus.receitasapp.ui.theme.ReceitasAppTheme
 import java.util.Locale
 
@@ -37,7 +38,7 @@ fun ButtonsSection(
             modifier = Modifier.fillMaxWidth()
         ) {
 
-            Divider(color = MaterialTheme.colorScheme.outline)
+            //Divider(color = MaterialTheme.colorScheme.outline)
 
             Spacer(modifier = Modifier.height(DpDimensions.Dp30))
 
@@ -50,7 +51,7 @@ fun ButtonsSection(
                 Button(
                     onClick = onGetStartedClick,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimary
+                        containerColor = GreenApp
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -60,7 +61,7 @@ fun ButtonsSection(
                     Text(
                         text = stringResource(R.string.get_started).uppercase(Locale.getDefault()),
                         style = MaterialTheme.typography.titleMedium,
-                        color = Color.White
+                        //color = Color.White
                     )
 
                 }

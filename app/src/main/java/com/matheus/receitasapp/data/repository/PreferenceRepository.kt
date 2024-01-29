@@ -20,6 +20,7 @@ class PreferenceRepository(private val context: Context) {
     private object PreferenceKeys {
         val isUserLoggedIn = booleanPreferencesKey("is_user_logged_in")
         val isDarkModeEnabled = booleanPreferencesKey("is_dark_mode_enabled")
+        val isOnboardingEnable = booleanPreferencesKey("is_onboarding_enabled")
     }
 
 
@@ -32,6 +33,12 @@ class PreferenceRepository(private val context: Context) {
     suspend fun setDarkMode(isEnabled: Boolean) {
         context.dataStore.edit { preference ->
             preference[PreferenceKeys.isDarkModeEnabled] = isEnabled
+        }
+    }
+
+    suspend fun setOnboarding(isEnabled: Boolean) {
+        context.dataStore.edit { preference ->
+            preference[PreferenceKeys.isOnboardingEnable] = isEnabled
         }
     }
 
@@ -50,6 +57,14 @@ class PreferenceRepository(private val context: Context) {
             else throw exception
         }.map { preferences ->
             preferences[PreferenceKeys.isDarkModeEnabled] ?: false
+        }
+
+   val isOnboardingEnabled: Flow<Boolean> = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) emit(emptyPreferences())
+            else throw exception
+        }.map { preferences ->
+            preferences[PreferenceKeys.isOnboardingEnable] ?: false
         }
 
 

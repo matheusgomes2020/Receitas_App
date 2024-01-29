@@ -55,6 +55,9 @@ fun OnboardingScreen(navController: NavController) {
     val systemUiController = rememberSystemUiController()
     val settingsViewModel: SettingsViewModel = hiltViewModel()
     val isDarkModeEnabled by settingsViewModel.isDarkModeEnabled.collectAsStateWithLifecycle(initialValue = false)
+    val isOnboardingEnabled by settingsViewModel.isDarkModeEnabled.collectAsStateWithLifecycle(
+        initialValue = false
+    )
     val useDarkIcons = !isDarkModeEnabled
 
     SideEffect {
@@ -68,7 +71,8 @@ fun OnboardingScreen(navController: NavController) {
 
     OnboardingPager(
         pagerState = pagerState, navController = navController,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        settingsViewModel = settingsViewModel
     )
 
 
@@ -90,7 +94,8 @@ fun OnboardingPager(
     items: List<OnBoarding> = onBoardingItems,
     pagerState: PagerState,
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    settingsViewModel: SettingsViewModel
 ) {
 
     val coroutineScope = rememberCoroutineScope()
@@ -131,17 +136,19 @@ fun OnboardingPager(
                             contentDescription = stringResource(
                                 id = items[page].title
                             ),
-                            modifier = Modifier.size(250.dp)
+                            modifier = Modifier.size(230.dp)
                         )
 
-                        Spacer(modifier = Modifier.height(DpDimensions.Dp20))
+                        Spacer(modifier = Modifier.height(80.dp))
 
                         Text(
+                            modifier = Modifier
+                                .padding(horizontal = DpDimensions.Small),
                             text = stringResource(id = items[page].title),
                             style = MaterialTheme.typography.headlineLarge,
                             color = MaterialTheme.colorScheme.inversePrimary,
                             textAlign = TextAlign.Center,
-                            fontSize = 30.sp,
+                            fontSize = 25.sp,
                             lineHeight = 40.sp
                         )
 
@@ -157,7 +164,10 @@ fun OnboardingPager(
 
             ButtonsSection(
                 modifier = Modifier.fillMaxWidth(),
-                onGetStartedClick = { navController.navigate(NavDestinations.MAIN_APP) },
+                onGetStartedClick = {
+                    navController.navigate(NavDestinations.MAIN_APP)
+                    settingsViewModel.setIsOnboarding(true)
+                                    },
                 onHaveAccountClick = { }
             )
         }

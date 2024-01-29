@@ -57,7 +57,7 @@ fun NavGraphBuilder.mainNavGraph(navController: NavController, isSystemInDarkThe
 
         searchScreenNavGraph( navController = navController )
         settingsNavGraph(navController = navController, isSystemInDarkTheme = isSystemInDarkTheme)
-        recipeDetailsNavGraph2( navController = navController )
+        recipeDetailsNavGraph2( navController = navController, isSystemInDarkTheme )
         topRecipesNavGraph( navController = navController )
         filtersNavGraph( navController = navController )
 
