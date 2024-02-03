@@ -9,16 +9,22 @@ import com.matheus.core.usecase.base.PagingUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetRecipesUseCase2 @Inject constructor(
-    private val recipesRepository: RecipesRepository2
-) : PagingUseCase<GetRecipesUseCase2.GetRecipesParams, Recipe2>() {
+interface GetRecipesUseCase2{
 
-    override fun createFlowObservable(params: GetRecipesParams): Flow<PagingData<Recipe2>> {
+    operator fun invoke(params: GetRecipesParams): Flow<PagingData<Recipe2>>
+    data class GetRecipesParams(val query: String, val pagingConfig: PagingConfig)
+}
+class GetRecipesUseCase2Impl @Inject constructor(
+    private val recipesRepository: RecipesRepository2
+) : PagingUseCase<GetRecipesUseCase2.GetRecipesParams, Recipe2>(),
+GetRecipesUseCase2{
+
+    override fun createFlowObservable(params: GetRecipesUseCase2.GetRecipesParams): Flow<PagingData<Recipe2>> {
         return Pager(config = params.pagingConfig) {
             recipesRepository.getRecipes(params.query)
         }.flow
     }
 
-    data class GetRecipesParams(val query: String, val pagingConfig: PagingConfig)
+
 
 }

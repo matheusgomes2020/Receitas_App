@@ -49,7 +49,7 @@ class RecipesViewModel @Inject constructor(
         }
     }
 
-    private suspend fun recipesPagingData(query: String) {
+     suspend fun recipesPagingData(query: String) {
          getRecipesUseCase(
             GetRecipesUseCase2.GetRecipesParams(query, getPageConfig())
         ).cachedIn(viewModelScope).collect{

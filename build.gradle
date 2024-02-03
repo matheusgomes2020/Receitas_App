@@ -5,7 +5,7 @@ buildscript {
         hilt_version = '2.47'
         room_version = '2.4.1'
         ext.detekt_version = "1.23.3"
-        ext.paging_version = '3.0.1'
+        ext.paging_version = '3.1.0'
         ext.coroutines_version = "1.6.4"
     }
     dependencies {
