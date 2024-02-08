@@ -20,8 +20,9 @@ class GetRecipesUseCase2Impl @Inject constructor(
 GetRecipesUseCase2{
 
     override fun createFlowObservable(params: GetRecipesUseCase2.GetRecipesParams): Flow<PagingData<Recipe2>> {
+        val pagingSource = recipesRepository.getRecipes(params.query)
         return Pager(config = params.pagingConfig) {
-            recipesRepository.getRecipes(params.query)
+            pagingSource
         }.flow
     }
 

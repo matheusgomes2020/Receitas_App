@@ -65,6 +65,12 @@ class RecipesViewModel @Inject constructor(
         }
     }
 
+    fun recipesPagingDataMaster(query: String): Flow<PagingData<Recipe2>> {
+        return getRecipesUseCase(
+            GetRecipesUseCase2.GetRecipesParams(query, getPageConfig())
+        ).cachedIn(viewModelScope)
+    }
+
 
     private fun getPageConfig() = PagingConfig(
         pageSize = 20
