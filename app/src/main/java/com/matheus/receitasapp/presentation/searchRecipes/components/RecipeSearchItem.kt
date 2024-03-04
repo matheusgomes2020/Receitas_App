@@ -3,6 +3,7 @@ package com.matheus.receitasapp.presentation.searchRecipes.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.data.remote.dto.Recipe
 import com.matheus.receitasapp.navigation.NavDestinations
+import com.matheus.receitasapp.ui.theme.DarkGrey11
 import com.matheus.receitasapp.ui.theme.Grey46
 import com.matheus.receitasapp.ui.theme.fontFamily2
 import com.matheus.receitasapp.ui.theme.fontFamily3
@@ -49,19 +51,19 @@ fun RecipeSearchItem(navController: NavController, recipe: Recipe) {
                     .navigate(NavDestinations.RecipeDetails.RECIPE_DETAILS + "/${idToUri}")
             }
             .fillMaxWidth()
-            .background(Color.White),
+            .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White),
         shape = RoundedCornerShape(DpDimensions.Smallest),
     ) {
         Box(
             modifier = Modifier
                 .padding(DpDimensions.Smallest)
-                .background(Color.White),
+                .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White),
         ) {
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White),
+                    .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White),
                 horizontalArrangement = Arrangement.spacedBy(DpDimensions.Smallest),
                 verticalAlignment = Alignment.CenterVertically
             ) {

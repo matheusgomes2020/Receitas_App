@@ -1,11 +1,13 @@
 package com.matheus.receitasapp.presentation.recipe_detail
 
 import android.content.Context
+import android.content.res.Configuration
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -34,6 +36,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -57,6 +60,7 @@ import co.yml.charts.ui.piechart.charts.DonutPieChart
 import co.yml.charts.ui.piechart.models.PieChartConfig
 import co.yml.charts.ui.piechart.models.PieChartData
 import coil.compose.rememberAsyncImagePainter
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.common.ShimmerRecipeDetail
@@ -80,8 +84,10 @@ import kotlin.math.roundToInt
 
 @Composable
 fun RecipeDetailScreen(
+    isSystemInDarkTheme: Boolean,
     navController: NavController,
     viewModel: RecipeDetailViewModel = hiltViewModel(),
+
     addRecipeViewModel: AddRoomRecipeViewModel = hiltViewModel(),
     getRecipesViewModel: GetRecipesViewModel = hiltViewModel()
 ) {
@@ -89,6 +95,17 @@ fun RecipeDetailScreen(
     val stateRecipesRoom = getRecipesViewModel.state.value
 
     val context = LocalContext.current
+
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = !isSystemInDarkTheme
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = if (useDarkIcons)
+                Color.White else DarkGrey11,
+            darkIcons = useDarkIcons
+        )
+    }
 
 
    // val idState =
@@ -158,25 +175,27 @@ fun RecipeDetailScreen(
                 var uriToId2: String = uri2.substring(uri2.indexOf("_")+1)
                 uriToId2 == uriToId
             }
-            Log.d("MERCADOLIVRE", "RecipeDetailScreen: \n$recipeList \n$list | \n$uriToId")
-
             if (!list.isNullOrEmpty()){
                 isFavorite = true
                 recipeRoom = list[0]
-                Log.d("MERCADOLIVRE", "Recipe ROOM???!NULL: $recipeRoom")
-
             }
+
 
             BoxWithConstraints(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.White)
+                    //.background(if (!useDarkIcons) Color.White else DarkGrey11)
                     .verticalScroll(rememberScrollState())
             ) {
-                uiState.image?.let { TopContainer(context = context,recipeRoom = recipeRoom, isFavorite = isFavorite, image = it, navController = navController, addRecipeViewModel = addRecipeViewModel, getRecipesViewModel = getRecipesViewModel) }
+                uiState.image?.let {
+                    //TopContainerTest()
+                    //Text(text = it)
+                    TopContainer(context = context,recipeRoom = recipeRoom, isFavorite = isFavorite, image = it, navController = navController, addRecipeViewModel = addRecipeViewModel, getRecipesViewModel = getRecipesViewModel)
+                }
                 Column(
                     verticalArrangement = Arrangement.Bottom,
                     modifier = Modifier
+                       // .background(if (isSystemInDarkTheme()) Color.Yellow else Color.White)
                         .padding(start = DpDimensions.Dp25, top = 380.dp, end = DpDimensions.Dp25)
                 ) {
                     uiState.label?.let { uiState.calories?.let { it1 -> uiState.totalTime?.let { it2 -> DetailsContent( name = it, ingredientsQuantity = uiState.ingredients.size, calories = it1, totalTime = it2) } } }
@@ -234,9 +253,9 @@ fun TopContainer(
                     .clip(RoundedCornerShape(DpDimensions.Dp50)),
                     // .blur(radius = 16.dp)
                 ){
-                    Icon(tint = Color.Black, painter = painterResource(id = R.drawable.left_chevron_t), contentDescription = ""
+                    Icon(tint = if (isSystemInDarkTheme()) Color.White else DarkGrey11, painter = painterResource(id = R.drawable.left_chevron_t), contentDescription = ""
                         , modifier = Modifier
-                            .background(Color.White)
+                            .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White)
                             .padding(DpDimensions.Small)
                             .size(18.dp)
                             .clickable {
@@ -250,11 +269,11 @@ fun TopContainer(
                     // .blur(radius = 16.dp)
                 ){
                     var icon = if (isFavorite) R.drawable.bookmark_filled else R.drawable.bookmark
-                    Icon(tint = GreenApp, painter =
+                    Icon(tint = if (isSystemInDarkTheme()) Color.White else GreenApp, painter =
                     painterResource(
                         id = icon), contentDescription = ""
                         , modifier = Modifier
-                            .background(Color.White)
+                            .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White)
                             .padding(DpDimensions.Small)
                             .size(22.dp)
                             .clickable {
@@ -265,7 +284,7 @@ fun TopContainer(
                                             Toast
                                                 .makeText(
                                                     context,
-                                                    "${recipeRoom.title} removida dos favoritos!!!",
+                                                    "${recipeRoom.title} removed!!!",
                                                     Toast.LENGTH_SHORT
                                                 )
                                                 .show()
@@ -276,7 +295,7 @@ fun TopContainer(
                                         Toast
                                             .makeText(
                                                 context,
-                                                "${recipeRoom.title} salva nos favoritos!!!",
+                                                "${recipeRoom.title} saved!!!",
                                                 Toast.LENGTH_SHORT
                                             )
                                             .show()
@@ -370,6 +389,7 @@ fun InstructionsContainer( instructions: List<String>) {
     Column(
         modifier = Modifier
             .padding(vertical = DpDimensions.Normal)
+            .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White)
             //.clip(RoundedCornerShape(DpDimensions.Normal))
     ) {
         Text(text = "Instructions",
@@ -386,6 +406,7 @@ fun InstructionsContainer( instructions: List<String>) {
         ) {
             var count = 0
             LazyColumn(modifier = Modifier
+                .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White)
                 .height(300.dp)
                 .padding(DpDimensions.Small)){
                 items(instructions) {
@@ -469,11 +490,16 @@ fun Infos(calories: String,digest: List<Digest>){
         }
     }
 
-    Column {
+    Column(
+        modifier = Modifier
+            .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White)
+    ) {
         Text(text = "Nutritional information's",
             fontWeight = FontWeight.SemiBold,
             fontSize = 18.sp)
         Column(
+            modifier = Modifier
+                .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -490,6 +516,8 @@ fun Infos(calories: String,digest: List<Digest>){
                 isAnimationEnable = true,
                 showSliceLabels = true,
                 labelVisible = true,
+                backgroundColor =      if (isSystemInDarkTheme()) DarkGrey11 else Color.White,
+
                 //percentageFontSize = 42.sp,
                 strokeWidth = 120f,
                 //percentColor = Color.Black,
@@ -499,12 +527,15 @@ fun Infos(calories: String,digest: List<Digest>){
             DonutPieChart(
                 modifier = Modifier
                     .size(250.dp)
-                    .padding(DpDimensions.Normal),
+                    .padding(DpDimensions.Normal)
+                    .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White),
                 donutChartData,
                 donutChartConfig
             )
 
             Row(
+                modifier = Modifier
+                    .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 RowInfo(color = 0xFF5F0A87, text = "Carbs")
@@ -514,7 +545,7 @@ fun Infos(calories: String,digest: List<Digest>){
                 RowInfo(color = 0xFFEC9F05, text = "Fat")
             }
 
-            androidx.compose.material.Card(
+            Card(
                 elevation = 4.dp,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -525,9 +556,11 @@ fun Infos(calories: String,digest: List<Digest>){
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
+                        .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White)
                         .padding(
                             vertical = DpDimensions.Small,
-                            horizontal = DpDimensions.Normal)
+                            horizontal = DpDimensions.Normal
+                        )
 
                 ) {
                     Text(text = "Calories",
@@ -546,6 +579,7 @@ fun Infos(calories: String,digest: List<Digest>){
             ) {
                 Column(
                     modifier = Modifier
+                        .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White)
                         .padding(vertical = DpDimensions.Small),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -581,6 +615,7 @@ private fun RowInfoDetails(fontWeight: FontWeight,label: String, unit: String) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
+            .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White)
             .fillMaxWidth()
             .padding(horizontal = DpDimensions.Normal)
     ) {
@@ -611,7 +646,7 @@ private fun RowInfo(color: Long, text: String) {
                 .padding(start = DpDimensions.Smallest),
             text = text,
             fontWeight = FontWeight.SemiBold,
-            color = DarkGrey11
+            //color = DarkGrey11
         )
     }
 }
@@ -801,6 +836,7 @@ fun TopContainerTest(){
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun DetailsContentTest(){
     Surface(
@@ -937,12 +973,13 @@ fun IngredientItemTest() {
 
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PrincipalTest() {
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(if (!isSystemInDarkTheme()) Color.White else Color.Black)
     ) {
         TopContainerTest()
         Column(

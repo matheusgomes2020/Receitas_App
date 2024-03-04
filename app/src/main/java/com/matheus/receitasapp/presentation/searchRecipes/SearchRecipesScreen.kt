@@ -50,6 +50,7 @@ import com.matheus.receitasapp.presentation.searchRecipes.components.SearchBar
 import com.matheus.receitasapp.presentation.searchRecipes.components.mealTypes
 import com.matheus.receitasapp.ui.theme.DarkGrey11
 import com.matheus.receitasapp.ui.theme.GreenApp
+import com.matheus.receitasapp.ui.theme.GreenAppDark
 import com.matheus.receitasapp.ui.theme.ReceitasAppTheme
 
 
@@ -58,7 +59,8 @@ fun RowType(
     type: RowSearchType,
     selectedd: Boolean,
     //onType: (String) -> Unit,
-    onSelected: (Boolean) -> Unit
+    onSelected: (Boolean) -> Unit,
+    isSystemInDarkTheme: Boolean = androidx.compose.foundation.isSystemInDarkTheme()
 ){
     var selected = remember {
         mutableStateOf(selectedd)
@@ -72,10 +74,10 @@ fun RowType(
         onClick = {
             if (selected.value) {
                 selected.value = false
-                color.value = Color.White
+                color.value = if (isSystemInDarkTheme ) DarkGrey11 else Color.White
             } else {
                 selected.value = true
-                color.value = GreenApp
+                color.value = if (isSystemInDarkTheme ) GreenAppDark else GreenApp
             }
             //onType(type.label)
             onSelected(selected.value)
@@ -235,7 +237,7 @@ fun SearchRecipesScreen(
                 if (state.isLoading) {
 
                     LazyColumn(modifier = Modifier
-                        .background(Color.White),
+                        .background(if (isSystemInDarkTheme()) DarkGrey11 else Color.White),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         items(10) {

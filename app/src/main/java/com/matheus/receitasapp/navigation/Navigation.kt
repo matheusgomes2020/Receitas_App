@@ -3,7 +3,6 @@ package com.matheus.receitasapp.navigation
 import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,7 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.matheus.receitasapp.presentation.recipe_detail.RecipeDetailScreen
-import com.matheus.receitasapp.presentation.searchRecipes.SearchRecipesScreen
 
 @Composable
 fun RootNavigationGraph( navController: NavHostController ) {
@@ -43,7 +41,7 @@ fun NavGraphBuilder.recipeDetailsNavGraph( navController: NavController ) {
 
             navBackStackEntry.arguments?.getString("recipeId").let {
                 Log.d("TRT", "movieDetailsNavGraph2: ${navBackStackEntry.destination}")
-                RecipeDetailScreen(navController = navController)
+                RecipeDetailScreen(isSystemInDarkTheme = isSystemInDarkTheme(), navController = navController)
             }
         }
     }

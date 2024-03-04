@@ -25,7 +25,7 @@ fun NavGraphBuilder.recipeDetailsNavGraph2(navController: NavController, isSyste
         ) { navBackStackEntry ->
 
             navBackStackEntry.arguments?.getString("recipeId").let {
-                RecipeDetailScreen(navController = navController)
+                RecipeDetailScreen(isSystemInDarkTheme = isSystemInDarkTheme, navController = navController)
             }
         }
     }

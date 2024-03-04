@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,6 +38,7 @@ import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.navigation.utils.bottomNavScreens
 import com.matheus.receitasapp.ui.theme.DarkGrey11
 import com.matheus.receitasapp.ui.theme.GreenApp
+import com.matheus.receitasapp.ui.theme.Grey13
 import com.matheus.receitasapp.ui.theme.Grey46
 import com.matheus.receitasapp.ui.theme.ReceitasAppTheme
 
@@ -52,12 +57,15 @@ fun BottomNavBar(
         Column(
             modifier = Modifier
                 .padding(DpDimensions.Small)
+                //.background(if (isSystemInDarkTheme()) DarkGrey11 else White)
         ) {
             NavigationBar(
-                containerColor = if (isSystemInDarkMode) DarkGrey11 else White,
+                containerColor = if (isSystemInDarkTheme()) Grey13 else White,
+                //containerColor = Yellow,
 
                 modifier = Modifier
                     .fillMaxWidth()
+                    //.background(Blue)
                     .graphicsLayer {
                         clip = true
                         shape = RoundedCornerShape(DpDimensions.Dp30)
@@ -73,6 +81,7 @@ fun BottomNavBar(
                         currentDestination?.hierarchy?.any { it.route == screen.route } == true
                     NavigationBarItem(
                         selected = selected,
+                        modifier = Modifier.background(if (isSystemInDarkTheme()) Grey13 else White),
                         onClick = {
                             navController.navigate(screen.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {
@@ -97,7 +106,7 @@ fun BottomNavBar(
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = if (isSystemInDarkTheme()) DarkGrey11 else White,
+                            indicatorColor = if (isSystemInDarkTheme()) Grey13 else White,
 
                         )
                     )

@@ -11,6 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val DarkGrey11 = Color(0xff181a20)
+val DarkGrey12 = Color(0xff181a20)
 val Green67 = Color(0xffa0e86f)
 val Green67_A = Color(0x80d6ffbe)
 val Green54 = Color(0xFF80BA59)
@@ -68,3 +69,4 @@ val AppColor= Color(0xFFE48C1B)
 
 //val GreenApp = Color(0xFFAFE9C6)
 val GreenApp = Color(0xFF4DB978)
+val GreenAppDark = Color(0xFF023316)

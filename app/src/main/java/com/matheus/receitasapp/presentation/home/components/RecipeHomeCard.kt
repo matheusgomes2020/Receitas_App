@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -106,7 +107,7 @@ fun RecipeCard(
                     ),
                 )
                 .paint(
-                    painter = rememberAsyncImagePainter( model = image ),
+                    painter = rememberAsyncImagePainter(model = image),
                     contentScale = ContentScale.Crop
                 ))
         }
@@ -118,6 +119,7 @@ fun RecipeCard(
                 modifier = Modifier
                     .width(170.dp),
                 text = label,
+                color = if (isSystemInDarkTheme()) Color.White else Color.Black,
                 fontFamily = fontFamily3,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 15.sp,
@@ -125,7 +127,7 @@ fun RecipeCard(
             )
             Text(
                 text = "$qtd ingredients - $totalTime min",
-                color = Grey46,
+                color = if (isSystemInDarkTheme()) Color.White else Grey46,
                 fontFamily = fontFamily3,
                 fontSize = 13.sp
             )
