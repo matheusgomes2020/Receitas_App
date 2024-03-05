@@ -136,7 +136,7 @@ fun OnboardingPager(
                             contentDescription = stringResource(
                                 id = items[page].title
                             ),
-                            modifier = Modifier.size(230.dp)
+                            modifier = Modifier.size(215.dp)
                         )
 
                         Spacer(modifier = Modifier.height(80.dp))
@@ -146,9 +146,9 @@ fun OnboardingPager(
                                 .padding(horizontal = DpDimensions.Small),
                             text = stringResource(id = items[page].title),
                             style = MaterialTheme.typography.headlineLarge,
-                            color = MaterialTheme.colorScheme.inversePrimary,
+                            color = if (isSystemInDarkTheme()) Color.White else Color.LightGray,
                             textAlign = TextAlign.Center,
-                            fontSize = 25.sp,
+                            fontSize = 23.sp,
                             lineHeight = 40.sp
                         )
 

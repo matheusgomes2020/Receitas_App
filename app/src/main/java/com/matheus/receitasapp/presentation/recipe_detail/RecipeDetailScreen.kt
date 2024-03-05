@@ -209,7 +209,7 @@ fun RecipeDetailScreen(
                         "Drizzle over top.",
                         "If desired, top with grape tomato halves."
                     )
-                    InstructionsContainer(instructions = aa)
+                    //InstructionsContainer(instructions = aa)
                 }
 
             }

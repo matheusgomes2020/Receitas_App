@@ -56,7 +56,7 @@ fun MainAppBar(
             )
         ) {
             Image(
-                painter = painterResource(id = R.drawable.tomato),
+                painter = painterResource(id = R.drawable.yumlogoo),
                 contentDescription = "Logo",
                 modifier = Modifier.size(DpDimensions.Dp30)
                     .clickable { onLogoClick() }

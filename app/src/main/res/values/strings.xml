@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Receitas App</string>
+    <string name="app_name">YumRecipezz</string>
     <string name="home">Home</string>
     <string name="favorites">Favorites</string>
     <string name="ingredients">Ingredients</string>
     <string name="get_started">Get Started</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="favorites_onboarding">Dou you like a recipe? Here you can save your favorite recipes.</string>
-    <string name="search_onboarding">Search a lot o recipes based on diets, health and more.</string>
+    <string name="search_onboarding">Search a lot of recipes based on diets, health and more.</string>
     <string name="ingredients_onboarding">Get the best recipes based on the best and more used ingredients.</string>
 </resources>

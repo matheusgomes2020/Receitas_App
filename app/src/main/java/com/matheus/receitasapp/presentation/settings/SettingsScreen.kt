@@ -83,10 +83,20 @@ fun SettingsScreen(
         Uri.parse("https://doc-hosting.flycricket.io/pop-cine-privacy-policy/7016f44d-67a3-40d5-8700-868e80fab0d1/privacy")
     )
 
+    val webIntentTerms: Intent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("https://doc-hosting.flycricket.io/yumrecipezz-terms-of-use/1c72ab19-c38f-4e8f-ba77-ccb51dbeb109/terms")
+    )
+
+    val webIntentAbout: Intent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("https://a95633b3-eb5c-4b2e-88ea-95bb99a08b34.app-ads-host.com/app-ads.txt")
+    )
+
     SideEffect {
         systemUiController.setSystemBarsColor(
             color = if (useDarkIcons)
-                Color.White else DarkGrey11,
+                DarkGrey11 else Color.White,
             darkIcons = useDarkIcons
         )
     }
@@ -104,8 +114,8 @@ fun SettingsScreen(
                 .verticalScroll(scrollState)
                 .fillMaxSize()
                 .background(
-                    color = if (useDarkIcons)
-                        Color.White else DarkGrey11
+                    color = if (isSystemInDarkTheme())
+                        DarkGrey11 else Color.White
                 )
         ) {
             Spacer(modifier = androidx.compose.ui.Modifier.height(DpDimensions.Small))
@@ -129,48 +139,56 @@ fun SettingsScreen(
 //                    Toast.makeText( context, "Em breve!!!", Toast.LENGTH_SHORT ).show()
 //                }
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    SettingsItem(
-                        title = stringResource(R.string.dark_mode),
-                        icon = R.drawable.dark_mode,
-                        iconTint = Blue59,
-                        modifier = Modifier.weight(1f),
-                        isRightIconVisible = false
-                    )
-
-
-
-                    Switch(
-                        checked = isDarkModeEnabled, onCheckedChange = settingsViewModel::setDarkModel,
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = Color.White
-                        )
-                    )
-                }
+//                Row(
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    SettingsItem(
+//                        title = stringResource(R.string.dark_mode),
+//                        icon = R.drawable.dark_mode,
+//                        iconTint = Blue59,
+//                        modifier = Modifier.weight(1f),
+//                        isRightIconVisible = false
+//                    )
 //
-                DarkModeItem(
-                    icon = R.drawable.dark_mode,
-                    title = stringResource(R.string.dark_mode),
-                    onState = { switchState },
-                    onCheckChange = viewModel::onCheckChange
-                )
+//
+//
+//                    Switch(
+//                        checked = isDarkModeEnabled, onCheckedChange = settingsViewModel::setDarkModel,
+//                        colors = SwitchDefaults.colors(
+//                            checkedThumbColor = Color.White
+//                        )
+//                    )
+//                }
+////
+//                DarkModeItem(
+//                    icon = R.drawable.dark_mode,
+//                    title = stringResource(R.string.dark_mode),
+//                    onState = { switchState },
+//                    onCheckChange = viewModel::onCheckChange
+//                )
 
                 AccountItem(
                     icon = R.drawable.privacy,
-                    title = "Política de privacidade",
+                    title = "Privacy Policy",
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     context.startActivity(webIntentPrivacy)
                 }
 
                 AccountItem(
-                    icon = R.drawable.info,
-                    title = "Sobre",
+                    icon = R.drawable.privacy,
+                    title = "Terms of use",
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Toast.makeText(context, "Em breve!!!", Toast.LENGTH_SHORT).show()
+                    context.startActivity(webIntentTerms)
+                }
+
+                AccountItem(
+                    icon = R.drawable.info,
+                    title = "About",
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    context.startActivity(webIntentAbout)
                 }
 
                 Spacer(modifier = Modifier.height(30.dp))

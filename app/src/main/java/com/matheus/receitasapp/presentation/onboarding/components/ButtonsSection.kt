@@ -1,6 +1,7 @@
 package com.ezzy.quizzo.ui.screens.onboarding.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.matheus.receitasapp.R
 import com.matheus.receitasapp.common.DpDimensions
 import com.matheus.receitasapp.ui.theme.GreenApp
+import com.matheus.receitasapp.ui.theme.GreenAppDark
 import com.matheus.receitasapp.ui.theme.ReceitasAppTheme
 import java.util.Locale
 
@@ -51,7 +53,7 @@ fun ButtonsSection(
                 Button(
                     onClick = onGetStartedClick,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = GreenApp
+                        containerColor = if (isSystemInDarkTheme()) GreenAppDark else GreenApp
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -61,7 +63,7 @@ fun ButtonsSection(
                     Text(
                         text = stringResource(R.string.get_started).uppercase(Locale.getDefault()),
                         style = MaterialTheme.typography.titleMedium,
-                        //color = Color.White
+                        color = Color.White
                     )
 
                 }

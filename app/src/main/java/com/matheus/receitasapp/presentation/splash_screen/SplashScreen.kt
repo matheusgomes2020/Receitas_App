@@ -3,6 +3,7 @@ package com.matheus.receitasapp.presentation.splash_screen
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,7 +78,7 @@ fun SplashScreen(navController: NavController) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
+            //.background(color = MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -92,9 +94,9 @@ fun SplashScreen(navController: NavController) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.pasta),
+                    painter = painterResource(id = R.drawable.yumlogoo),
                     contentDescription = "App logo",
-                    modifier = Modifier.size(150.dp)
+                    modifier = Modifier.size(200.dp)
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -103,7 +105,7 @@ fun SplashScreen(navController: NavController) {
                     text = stringResource(id = R.string.app_name),
                     fontSize = 30.sp,
                     style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.inversePrimary
+                    color = if (isSystemInDarkTheme()) Color.White else Color.DarkGray
                 )
             }
 
